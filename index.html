@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crazy Studios - Emulador de Juegos</title>
+    <title>Crazy Studios - Windows 11 Gaming Emulator</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -12,396 +12,47 @@
             box-sizing: border-box;
         }
 
-        :root {
-            --primary: #0078d4;
-            --primary-light: #1084d7;
-            --primary-dark: #106ebe;
-            --accent: #00b4ef;
-            --success: #00a86b;
-            --danger: #c42b1c;
-            --warning: #ffc107;
-            --dark: #1a1a1a;
-            --darker: #0f0f0f;
-            --light: #f3f3f3;
-            --border: #c4c4c4;
-            --shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
-            min-height: 100vh;
-            color: #333;
-            overflow-x: hidden;
-            background-attachment: fixed;
-        }
-
-        /* HEADER WINDOWS 11 STYLE */
-        header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 20px 40px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            animation: slideDown 0.5s ease;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 30px;
-        }
-
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo {
-            width: 50px;
-            height: 50px;
+        /* LOGIN SCREEN */
+        .login-screen {
+            width: 100%;
+            height: 100%;
             background: linear-gradient(135deg, #0078d4 0%, #00b4ef 100%);
-            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
-            box-shadow: 0 4px 12px rgba(0, 120, 212, 0.3);
-            transition: transform 0.3s ease;
-        }
-
-        .logo:hover {
-            transform: scale(1.08) rotate(5deg);
-        }
-
-        .title-section h1 {
-            font-size: 28px;
-            font-weight: 600;
-            color: var(--primary);
-            letter-spacing: -0.5px;
-        }
-
-        .title-section p {
-            font-size: 13px;
-            color: #666;
-            margin-top: 2px;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 40px;
-        }
-
-        /* SEARCH BARS - Windows 11 Style */
-        .search-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 50px;
-            animation: fadeIn 0.6s ease 0.2s both;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            animation: fadeIn 0.8s ease;
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        .search-bar, .duckgo-search {
+        .login-container {
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 15px 20px;
-            box-shadow: var(--shadow);
-            transition: all 0.3s ease;
-        }
-
-        .search-bar:hover, .duckgo-search:hover {
-            border-color: var(--primary);
-            box-shadow: 0 4px 16px rgba(0, 120, 212, 0.15);
-        }
-
-        .search-label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 10px;
-        }
-
-        .search-bar input, .duckgo-input-container input {
-            width: 100%;
-            padding: 10px 15px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 14px;
-            font-family: 'Segoe UI', sans-serif;
-            background: #f9f9f9;
-            color: #333;
-            transition: all 0.3s ease;
-        }
-
-        .search-bar input:focus, .duckgo-input-container input:focus {
-            outline: none;
-            background: white;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.1);
-        }
-
-        .search-bar input::placeholder, .duckgo-input-container input::placeholder {
-            color: #999;
-        }
-
-        .duckgo-input-container {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .duckgo-search-btn {
-            position: absolute;
-            right: 5px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .duckgo-search-btn:hover {
-            background: var(--primary-light);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 120, 212, 0.3);
-        }
-
-        .duckgo-search-btn:active {
-            transform: translateY(0);
-        }
-
-        /* SECTIONS */
-        .section {
-            margin-bottom: 80px;
-            animation: fadeIn 0.6s ease;
-        }
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--border);
-        }
-
-        .section-icon {
-            font-size: 32px;
-            color: var(--primary);
-        }
-
-        .section-title {
-            font-size: 24px;
-            font-weight: 600;
-            color: #1a1a1a;
-            letter-spacing: -0.5px;
-        }
-
-        .section-subtitle {
-            font-size: 13px;
-            color: #666;
-            margin-left: auto;
-            font-weight: 500;
-        }
-
-        /* GAMES GRID */
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .game-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .game-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-8px);
-            box-shadow: 0 16px 40px rgba(0, 120, 212, 0.2);
-        }
-
-        .game-card:active {
-            transform: translateY(-4px);
-        }
-
-        .game-image {
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 64px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .game-image::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/><circle cx="80" cy="80" r="1" fill="white" opacity="0.1"/></svg>');
-            opacity: 0.2;
-        }
-
-        .game-info {
-            padding: 20px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .game-info h3 {
-            font-size: 16px;
-            font-weight: 600;
-            color: #1a1a1a;
-            margin-bottom: 8px;
-        }
-
-        .game-info p {
-            color: #666;
-            font-size: 13px;
-            line-height: 1.5;
-            margin-bottom: 15px;
-            flex: 1;
-        }
-
-        .game-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-        }
-
-        .emulator-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            background: rgba(0, 120, 212, 0.1);
-            color: var(--primary);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .play-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            justify-content: center;
-            white-space: nowrap;
-        }
-
-        .play-btn:hover {
-            background: var(--primary-light);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 120, 212, 0.3);
-        }
-
-        .play-btn:active {
-            transform: translateY(0);
-        }
-
-        /* MODAL */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal-content {
-            background: white;
-            margin: 5% auto;
-            padding: 30px;
-            border-radius: 16px;
-            max-width: 90%;
-            max-height: 85vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            animation: slideUp 0.3s ease;
+            backdrop-filter: blur(30px);
+            border-radius: 20px;
+            padding: 60px 80px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 500px;
+            animation: slideUp 0.8s ease;
         }
 
         @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(50px);
             }
             to {
                 opacity: 1;
@@ -409,116 +60,634 @@
             }
         }
 
-        .modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--border);
+        .login-logo {
+            font-size: 80px;
+            margin-bottom: 30px;
+            animation: bounce 1s ease infinite;
         }
 
-        .game-title {
-            color: var(--primary);
-            font-size: 24px;
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .login-title {
+            font-size: 32px;
             font-weight: 600;
-            margin: 0;
+            color: #0078d4;
+            margin-bottom: 15px;
+            font-family: 'Segoe UI', sans-serif;
         }
 
-        .close {
-            background: transparent;
-            border: none;
-            font-size: 28px;
-            cursor: pointer;
+        .login-subtitle {
             color: #666;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-size: 14px;
+            margin-bottom: 40px;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 1px solid #ccc;
             border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            font-family: 'Segoe UI', sans-serif;
             transition: all 0.3s ease;
         }
 
-        .close:hover {
-            background: #f0f0f0;
-            color: var(--danger);
+        .login-input:focus {
+            outline: none;
+            border-color: #0078d4;
+            box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.1);
         }
 
-        .game-iframe {
+        .login-btn {
             width: 100%;
-            height: 600px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-
-        .modal-info {
-            color: #666;
-            font-size: 13px;
-            margin-top: 15px;
-            padding: 12px 15px;
-            background: #f9f9f9;
+            padding: 12px 20px;
+            background: #0078d4;
+            color: white;
+            border: none;
             border-radius: 8px;
-            border-left: 3px solid var(--primary);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Segoe UI', sans-serif;
         }
 
-        .modal-info a {
-            color: var(--primary);
-            text-decoration: none;
+        .login-btn:hover {
+            background: #106ebe;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 120, 212, 0.3);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        /* DESKTOP */
+        .desktop {
+            display: none;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .desktop.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* MAIN CONTENT */
+        .desktop-main {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* TASKBAR */
+        .taskbar {
+            background: rgba(32, 32, 32, 0.95);
+            backdrop-filter: blur(20px);
+            height: 60px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 20px;
+            justify-content: space-between;
+        }
+
+        .taskbar-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .start-btn {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #0078d4 0%, #00b4ef 100%);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: white;
+            font-weight: bold;
+        }
+
+        .start-btn:hover {
+            background: linear-gradient(135deg, #106ebe 0%, #0095d4 100%);
+            transform: scale(1.05);
+        }
+
+        .taskbar-apps {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .taskbar-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px;
+            color: white;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .taskbar-icon:hover {
+            background: rgba(0, 120, 212, 0.3);
+            transform: scale(1.1);
+        }
+
+        .taskbar-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .system-tray {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            color: white;
+            font-size: 12px;
+        }
+
+        .system-tray-icon {
+            width: 40px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .system-tray-icon:hover {
+            color: white;
+        }
+
+        .time-display {
+            min-width: 80px;
+            text-align: right;
+        }
+
+        /* START MENU */
+        .start-menu {
+            position: fixed;
+            bottom: 70px;
+            left: 20px;
+            width: 600px;
+            max-height: 700px;
+            background: rgba(32, 32, 32, 0.98);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 500;
+            overflow-y: auto;
+            animation: slideUpMenu 0.4s ease;
+        }
+
+        @keyframes slideUpMenu {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .start-menu.active {
+            display: block;
+        }
+
+        .start-menu-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .start-menu-search {
+            width: 100%;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .start-menu-search::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .start-menu-search:focus {
+            outline: none;
+            border-color: #0078d4;
+            box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.2);
+        }
+
+        .start-menu-content {
+            padding: 20px;
+        }
+
+        .start-menu-section {
+            margin-bottom: 20px;
+        }
+
+        .start-menu-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
             font-weight: 600;
         }
 
-        .modal-info a:hover {
-            text-decoration: underline;
+        .start-menu-apps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
         }
 
-        /* EMPTY STATE */
-        .no-results {
+        .start-menu-item {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
             text-align: center;
-            padding: 60px 20px;
-            color: #999;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
         }
 
-        .no-results-icon {
-            font-size: 64px;
-            margin-bottom: 20px;
-            opacity: 0.5;
+        .start-menu-item:hover {
+            background: rgba(0, 120, 212, 0.3);
+            border-color: #0078d4;
+            transform: translateY(-2px);
         }
 
-        .no-results p {
-            font-size: 16px;
+        .start-menu-item-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .start-menu-item-name {
+            font-size: 12px;
             font-weight: 500;
         }
 
-        .empty-section {
+        /* GAMES WINDOW */
+        .games-window {
             display: none;
-        }
-
-        /* FOOTER */
-        footer {
-            background: rgba(255, 255, 255, 0.95);
+            position: fixed;
+            width: 90%;
+            height: 85%;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(240, 240, 240, 0.98);
             backdrop-filter: blur(20px);
-            padding: 40px;
-            margin-top: 80px;
-            border-top: 1px solid var(--border);
-            text-align: center;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.3);
+            z-index: 400;
+            flex-direction: column;
+            animation: windowOpen 0.4s ease;
         }
 
-        footer p {
-            color: #666;
-            font-size: 13px;
-            margin: 0;
+        @keyframes windowOpen {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
         }
 
-        footer a {
-            color: var(--primary);
-            text-decoration: none;
+        .games-window.active {
+            display: flex;
+        }
+
+        .window-header {
+            background: linear-gradient(90deg, #f3f3f3 0%, #e8e8e8 100%);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 12px 12px 0 0;
+            user-select: none;
+        }
+
+        .window-title {
+            font-size: 14px;
             font-weight: 600;
+            color: #333;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        footer a:hover {
-            text-decoration: underline;
+        .window-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .window-btn {
+            width: 36px;
+            height: 32px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 16px;
+            color: #333;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .window-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .window-btn.close:hover {
+            background: #e81123;
+            color: white;
+        }
+
+        .window-content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* GAMES CONTENT */
+        .games-container {
+            padding: 30px;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #0078d4;
+            box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.1);
+        }
+
+        .search-btn {
+            padding: 10px 20px;
+            background: #0078d4;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            background: #106ebe;
+        }
+
+        .games-section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        .game-tile {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .game-tile:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 120, 212, 0.2);
+            border-color: #0078d4;
+        }
+
+        .game-tile-image {
+            width: 100%;
+            height: 140px;
+            background: linear-gradient(135deg, #0078d4 0%, #00b4ef 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .game-tile-info {
+            padding: 12px;
+        }
+
+        .game-tile-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .game-tile-desc {
+            font-size: 11px;
+            color: #666;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .game-tile-btn {
+            width: 100%;
+            padding: 6px;
+            background: #0078d4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .game-tile-btn:hover {
+            background: #106ebe;
+        }
+
+        /* SETTINGS */
+        .settings-window {
+            display: none;
+            position: fixed;
+            width: 600px;
+            height: 650px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(240, 240, 240, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.3);
+            z-index: 400;
+            flex-direction: column;
+            animation: windowOpen 0.4s ease;
+        }
+
+        .settings-window.active {
+            display: flex;
+        }
+
+        .settings-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .settings-group {
+            margin-bottom: 30px;
+        }
+
+        .settings-group-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .settings-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .settings-label {
+            font-size: 13px;
+            color: #333;
+        }
+
+        .toggle-switch {
+            width: 50px;
+            height: 26px;
+            background: #ccc;
+            border: none;
+            border-radius: 13px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: #0078d4;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active::after {
+            left: 26px;
+        }
+
+        /* FULLSCREEN BUTTON */
+        .fullscreen-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: #0078d4;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            z-index: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 120, 212, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .fullscreen-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 120, 212, 0.4);
+        }
+
+        .fullscreen-btn:active {
+            transform: scale(0.95);
         }
 
         /* SCROLLBAR */
@@ -527,480 +696,407 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: transparent;
+            background: #f0f0f0;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: var(--border);
+            background: #ccc;
             border-radius: 5px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary);
+            background: #999;
         }
 
         /* RESPONSIVE */
         @media (max-width: 1024px) {
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .header-content > * {
-                width: 100%;
-            }
-
-            .container {
-                padding: 30px 20px;
-            }
-
-            .search-container {
-                grid-template-columns: 1fr;
+            .start-menu {
+                width: 500px;
+                left: 10px;
             }
 
             .games-grid {
-                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-                gap: 15px;
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             }
 
-            .game-image {
-                height: 150px;
-                font-size: 48px;
+            .settings-window {
+                width: 90%;
+                height: 90%;
             }
         }
 
         @media (max-width: 640px) {
-            header {
-                padding: 15px 20px;
+            .taskbar {
+                height: 50px;
+                padding: 0 10px;
             }
 
-            .logo-section {
-                gap: 10px;
-            }
-
-            .logo {
+            .start-btn {
                 width: 40px;
                 height: 40px;
-                font-size: 20px;
+                font-size: 18px;
             }
 
-            .title-section h1 {
-                font-size: 20px;
+            .taskbar-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
             }
 
-            .container {
-                padding: 20px 15px;
+            .start-menu {
+                width: calc(100% - 20px);
+                max-width: 400px;
+            }
+
+            .games-window {
+                width: 95%;
+                height: 90%;
+            }
+
+            .games-container {
+                padding: 15px;
             }
 
             .games-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .section-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .section-subtitle {
-                margin-left: 0;
-            }
-
-            .game-iframe {
-                height: 400px;
-            }
-
-            .modal-content {
-                margin: 30% auto;
-                padding: 20px;
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- HEADER -->
-    <header>
-        <div class="header-content">
-            <div class="logo-section">
-                <div class="logo">🎮</div>
-                <div class="title-section">
-                    <h1>CRAZY STUDIOS</h1>
-                    <p>Emulador de Juegos Premium</p>
-                </div>
-            </div>
+    <!-- LOGIN SCREEN -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-container">
+            <div class="login-logo">🎮</div>
+            <h1 class="login-title">Crazy Studios</h1>
+            <p class="login-subtitle">Emulador de Juegos Windows 11</p>
+            <input type="text" class="login-input" id="username" placeholder="Usuario" value="Gamer">
+            <input type="password" class="login-input" id="password" placeholder="Contraseña" value="1234">
+            <button class="login-btn" onclick="login()">Iniciar Sesión</button>
         </div>
-    </header>
-
-    <!-- MAIN CONTENT -->
-    <div class="container">
-        <!-- SEARCH BARS -->
-        <div class="search-container">
-            <div class="search-bar">
-                <label class="search-label">🔍 Buscar Juegos</label>
-                <input type="text" id="searchInput" placeholder="Escribe para filtrar...">
-            </div>
-            <div class="duckgo-search">
-                <label class="search-label">🦆 Buscar en DuckDuckGo</label>
-                <div class="duckgo-input-container">
-                    <input type="text" id="duckgoInput" placeholder="Busca en toda la web...">
-                    <button class="duckgo-search-btn" onclick="searchDuckGo()">
-                        <i class="fas fa-search"></i> Buscar
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- JUEGOS CLÁSICOS -->
-        <section class="section">
-            <div class="section-header">
-                <span class="section-icon">🕹️</span>
-                <h2 class="section-title">Juegos Clásicos</h2>
-                <span class="section-subtitle" id="classicCount">0 juegos</span>
-            </div>
-            <div class="games-grid" id="classicGames"></div>
-            <div class="empty-section no-results" id="classicEmpty">
-                <div class="no-results-icon">🔍</div>
-                <p>No se encontraron juegos clásicos</p>
-            </div>
-        </section>
-
-        <!-- JUEGOS MODERNOS -->
-        <section class="section">
-            <div class="section-header">
-                <span class="section-icon">🚀</span>
-                <h2 class="section-title">Juegos Modernos</h2>
-                <span class="section-subtitle" id="modernCount">0 juegos</span>
-            </div>
-            <div class="games-grid" id="modernGames"></div>
-            <div class="empty-section no-results" id="modernEmpty">
-                <div class="no-results-icon">🔍</div>
-                <p>No se encontraron juegos modernos</p>
-            </div>
-        </section>
-
-        <!-- JUEGOS ONLINE -->
-        <section class="section">
-            <div class="section-header">
-                <span class="section-icon">🌐</span>
-                <h2 class="section-title">Juegos Online (Now.gg)</h2>
-                <span class="section-subtitle" id="onlineCount">0 juegos</span>
-            </div>
-            <div class="games-grid" id="onlineGames"></div>
-            <div class="empty-section no-results" id="onlineEmpty">
-                <div class="no-results-icon">🔍</div>
-                <p>No se encontraron juegos online</p>
-            </div>
-        </section>
     </div>
 
-    <!-- MODAL -->
-    <div id="gameModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="game-title" id="modalTitle">Título del Juego</h2>
-                <button class="close" onclick="closeGame()">
+    <!-- DESKTOP -->
+    <div class="desktop" id="desktop">
+        <!-- MAIN CONTENT -->
+        <div class="desktop-main"></div>
+
+        <!-- TASKBAR -->
+        <div class="taskbar">
+            <div class="taskbar-left">
+                <button class="start-btn" onclick="toggleStartMenu()">⊞</button>
+                <button class="taskbar-icon" onclick="openGamesWindow()" title="Juegos">
+                    <i class="fas fa-gamepad"></i>
+                </button>
+                <button class="taskbar-icon" title="Navegador">
+                    <i class="fas fa-globe"></i>
+                </button>
+            </div>
+            <div class="taskbar-right">
+                <div class="system-tray">
+                    <div class="system-tray-icon" onclick="openSettings()" title="Configuración">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <div class="system-tray-icon" title="Volumen">
+                        <i class="fas fa-volume-up"></i>
+                    </div>
+                    <div class="system-tray-icon" title="Wi-Fi">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <div class="time-display" id="timeDisplay">22:30</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- START MENU -->
+        <div class="start-menu" id="startMenu">
+            <div class="start-menu-header">
+                <input type="text" class="start-menu-search" placeholder="Escribe para buscar...">
+            </div>
+            <div class="start-menu-content">
+                <div class="start-menu-section">
+                    <div class="start-menu-label">Fijado</div>
+                    <div class="start-menu-apps">
+                        <div class="start-menu-item" onclick="openGamesWindow(); toggleStartMenu();">
+                            <div class="start-menu-item-icon">🎮</div>
+                            <div class="start-menu-item-name">Juegos</div>
+                        </div>
+                        <div class="start-menu-item" onclick="openSettings(); toggleStartMenu();">
+                            <div class="start-menu-item-icon">⚙️</div>
+                            <div class="start-menu-item-name">Configuración</div>
+                        </div>
+                        <div class="start-menu-item">
+                            <div class="start-menu-item-icon">🌐</div>
+                            <div class="start-menu-item-name">Navegador</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GAMES WINDOW -->
+    <div class="games-window" id="gamesWindow">
+        <div class="window-header">
+            <div class="window-title">
+                <i class="fas fa-gamepad"></i>
+                Juegos - Crazy Studios
+            </div>
+            <div class="window-controls">
+                <button class="window-btn" onclick="minimizeWindow('gamesWindow')">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button class="window-btn" onclick="maximizeWindow('gamesWindow')">
+                    <i class="fas fa-square"></i>
+                </button>
+                <button class="window-btn close" onclick="closeWindow('gamesWindow')">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div id="gameContainer"></div>
+        </div>
+        <div class="window-content">
+            <div class="games-container">
+                <div class="search-box">
+                    <input type="text" class="search-input" id="gamesSearch" placeholder="Buscar juegos...">
+                    <button class="search-btn" onclick="searchGames()">Buscar</button>
+                </div>
+
+                <!-- JUEGOS CLÁSICOS -->
+                <div class="games-section">
+                    <div class="section-title">🕹️ Juegos Clásicos</div>
+                    <div class="games-grid" id="classicGames"></div>
+                </div>
+
+                <!-- JUEGOS MODERNOS -->
+                <div class="games-section">
+                    <div class="section-title">🚀 Juegos Modernos</div>
+                    <div class="games-grid" id="modernGames"></div>
+                </div>
+
+                <!-- JUEGOS ONLINE -->
+                <div class="games-section">
+                    <div class="section-title">🌐 Juegos Online (Now.gg)</div>
+                    <div class="games-grid" id="onlineGames"></div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- FOOTER -->
-    <footer>
-        <p>&copy; 2024 <strong>Crazy Studios</strong> - Emulador de Juegos Premium | Diseño Windows 11</p>
-    </footer>
+    <!-- SETTINGS WINDOW -->
+    <div class="settings-window" id="settingsWindow">
+        <div class="window-header">
+            <div class="window-title">
+                <i class="fas fa-cog"></i>
+                Configuración
+            </div>
+            <div class="window-controls">
+                <button class="window-btn close" onclick="closeWindow('settingsWindow')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="settings-content">
+            <div class="settings-group">
+                <div class="settings-group-title">Pantalla</div>
+                <div class="settings-item">
+                    <span class="settings-label">Brillo</span>
+                    <input type="range" min="0" max="100" value="80" style="width: 100px;">
+                </div>
+                <div class="settings-item">
+                    <span class="settings-label">Modo Oscuro</span>
+                    <button class="toggle-switch"></button>
+                </div>
+            </div>
+
+            <div class="settings-group">
+                <div class="settings-group-title">Audio</div>
+                <div class="settings-item">
+                    <span class="settings-label">Volumen</span>
+                    <input type="range" min="0" max="100" value="70" style="width: 100px;">
+                </div>
+                <div class="settings-item">
+                    <span class="settings-label">Sonido del Sistema</span>
+                    <button class="toggle-switch active"></button>
+                </div>
+            </div>
+
+            <div class="settings-group">
+                <div class="settings-group-title">Sistema</div>
+                <div class="settings-item">
+                    <span class="settings-label">Notificaciones</span>
+                    <button class="toggle-switch active"></button>
+                </div>
+                <div class="settings-item">
+                    <span class="settings-label">Actualizaciones Automáticas</span>
+                    <button class="toggle-switch active"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FULLSCREEN BUTTON -->
+    <button class="fullscreen-btn" onclick="toggleFullscreen()" title="Pantalla Completa">
+        <i class="fas fa-expand"></i>
+    </button>
 
     <script>
         const games = {
             classic: [
-                {
-                    id: 1,
-                    name: 'Pac-Man',
-                    emoji: '👾',
-                    category: 'classic',
-                    description: 'El clásico juego de arcade que revolucionó la industria de los videojuegos',
-                    url: 'https://phasergames.com/pacman/'
-                },
-                {
-                    id: 2,
-                    name: 'Snake',
-                    emoji: '🐍',
-                    category: 'classic',
-                    description: 'El legendario juego de la serpiente de los años 90',
-                    url: 'https://www.playsnake.org/'
-                },
-                {
-                    id: 3,
-                    name: 'Tetris',
-                    emoji: '🧱',
-                    category: 'classic',
-                    description: 'Encaja las piezas perfectamente y alcanza el máximo puntaje',
-                    url: 'https://tetris.com/'
-                },
-                {
-                    id: 4,
-                    name: 'Space Invaders',
-                    emoji: '👽',
-                    category: 'classic',
-                    description: 'Defiende la tierra de los invasores alienígenas',
-                    url: 'https://phasergames.com/spaceinvaders/'
-                },
-                {
-                    id: 5,
-                    name: 'The Legend of Zelda',
-                    emoji: '🗡️',
-                    category: 'classic',
-                    description: 'La aventura épica de Link en el reino de Hyrule',
-                    url: 'https://classicgames.online/'
-                },
-                {
-                    id: 6,
-                    name: 'Dino Runner',
-                    emoji: '🦕',
-                    category: 'classic',
-                    description: 'Corre como el dinosaurio Chrome sin conexión a internet',
-                    url: 'https://chromedino.com/'
-                }
+                { name: 'Pac-Man', emoji: '👾', desc: 'Clásico Arcade', url: 'https://phasergames.com/pacman/' },
+                { name: 'Snake', emoji: '🐍', desc: 'Juego Retro', url: 'https://www.playsnake.org/' },
+                { name: 'Tetris', emoji: '🧱', desc: 'Bloques', url: 'https://tetris.com/' },
+                { name: 'Space Invaders', emoji: '👽', desc: 'Disparos', url: 'https://phasergames.com/spaceinvaders/' },
+                { name: 'The Legend of Zelda', emoji: '🗡️', desc: 'Aventura', url: 'https://classicgames.online/' },
+                { name: 'Dino Runner', emoji: '🦕', desc: 'Carreras', url: 'https://chromedino.com/' }
             ],
             modern: [
-                {
-                    id: 7,
-                    name: 'Minecraft',
-                    emoji: '⛏️',
-                    category: 'modern',
-                    description: 'Construye y explora mundos infinitos llenos de posibilidades',
-                    url: 'https://www.minecraft.net/'
-                },
-                {
-                    id: 8,
-                    name: '2048',
-                    emoji: '🔢',
-                    category: 'modern',
-                    description: 'Combina números inteligentemente para llegar a 2048',
-                    url: 'https://2048game.com/'
-                },
-                {
-                    id: 9,
-                    name: 'Flappy Bird',
-                    emoji: '🐦',
-                    category: 'modern',
-                    description: 'El juego más adictivo de los últimos años',
-                    url: 'https://flappybird.io/'
-                },
-                {
-                    id: 10,
-                    name: 'Portal',
-                    emoji: '🌀',
-                    category: 'modern',
-                    description: 'Resuelve puzles complejos utilizando portales',
-                    url: 'https://www.portalhq.com/'
-                },
-                {
-                    id: 11,
-                    name: 'Geometry Dash',
-                    emoji: '🟨',
-                    category: 'modern',
-                    description: 'Juego de ritmo adictivo y desafiante',
-                    url: 'https://geometrydash.io/'
-                },
-                {
-                    id: 12,
-                    name: 'Subway Surfers',
-                    emoji: '🚇',
-                    category: 'modern',
-                    description: 'Corre y esquiva obstáculos en el metro infinito',
-                    url: 'https://subwaysurfersplay.org/'
-                }
+                { name: 'Minecraft', emoji: '⛏️', desc: 'Construcción', url: 'https://www.minecraft.net/' },
+                { name: '2048', emoji: '🔢', desc: 'Números', url: 'https://2048game.com/' },
+                { name: 'Flappy Bird', emoji: '🐦', desc: 'Acción', url: 'https://flappybird.io/' },
+                { name: 'Portal', emoji: '🌀', desc: 'Puzles', url: 'https://www.portalhq.com/' },
+                { name: 'Geometry Dash', emoji: '🟨', desc: 'Ritmo', url: 'https://geometrydash.io/' },
+                { name: 'Subway Surfers', emoji: '🚇', desc: 'Carreras', url: 'https://subwaysurfersplay.org/' }
             ],
             online: [
-                {
-                    id: 13,
-                    name: 'Roblox',
-                    emoji: '🟥',
-                    category: 'online',
-                    description: 'La plataforma de juegos online más popular del mundo',
-                    url: 'https://now.gg/play/roblox/49513',
-                    isEmulated: true
-                },
-                {
-                    id: 14,
-                    name: 'Among Us',
-                    emoji: '👥',
-                    category: 'online',
-                    description: 'Encuentra al impostor entre tus amigos',
-                    url: 'https://now.gg/play/among-us/40000',
-                    isEmulated: true
-                },
-                {
-                    id: 15,
-                    name: 'Fortnite',
-                    emoji: '🎯',
-                    category: 'online',
-                    description: 'Battle royale multijugador en línea',
-                    url: 'https://now.gg/play/fortnite/4131',
-                    isEmulated: true
-                },
-                {
-                    id: 16,
-                    name: 'League of Legends',
-                    emoji: '⚔️',
-                    category: 'online',
-                    description: 'El MOBA más popular del mundo',
-                    url: 'https://now.gg/play/league-of-legends/1486',
-                    isEmulated: true
-                },
-                {
-                    id: 17,
-                    name: 'PUBG Mobile',
-                    emoji: '🔫',
-                    category: 'online',
-                    description: 'Battle royale multijugador extremo',
-                    url: 'https://now.gg/play/pubg-mobile/22601',
-                    isEmulated: true
-                },
-                {
-                    id: 18,
-                    name: 'Call of Duty Mobile',
-                    emoji: '🎮',
-                    category: 'online',
-                    description: 'FPS acción multijugador en tu navegador',
-                    url: 'https://now.gg/play/call-of-duty-mobile/5353',
-                    isEmulated: true
-                }
+                { name: 'Roblox', emoji: '🟥', desc: 'Multijugador', url: 'https://now.gg/play/roblox/49513', emulated: true },
+                { name: 'Among Us', emoji: '👥', desc: 'Social', url: 'https://now.gg/play/among-us/40000', emulated: true },
+                { name: 'Fortnite', emoji: '🎯', desc: 'Battle Royale', url: 'https://now.gg/play/fortnite/4131', emulated: true },
+                { name: 'League of Legends', emoji: '⚔️', desc: 'MOBA', url: 'https://now.gg/play/league-of-legends/1486', emulated: true },
+                { name: 'PUBG Mobile', emoji: '🔫', desc: 'Battle Royale', url: 'https://now.gg/play/pubg-mobile/22601', emulated: true },
+                { name: 'Call of Duty', emoji: '🎮', desc: 'FPS', url: 'https://now.gg/play/call-of-duty-mobile/5353', emulated: true }
             ]
         };
 
-        function renderGames() {
-            renderSection('classic', games.classic);
-            renderSection('modern', games.modern);
-            renderSection('online', games.online);
+        function login() {
+            const username = document.getElementById('username').value;
+            if (username.trim()) {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('desktop').classList.add('active');
+                updateTime();
+                setInterval(updateTime, 60000);
+            }
         }
 
-        function renderSection(category, gamesToRender) {
-            const grid = document.getElementById(category + 'Games');
-            const emptyDiv = document.getElementById(category + 'Empty');
-            const countSpan = document.getElementById(category + 'Count');
-            
-            grid.innerHTML = '';
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('timeDisplay').textContent = `${hours}:${minutes}`;
+        }
 
-            countSpan.textContent = `${gamesToRender.length} juego${gamesToRender.length !== 1 ? 's' : ''}`;
+        function toggleStartMenu() {
+            document.getElementById('startMenu').classList.toggle('active');
+        }
 
-            if (gamesToRender.length === 0) {
-                grid.style.display = 'none';
-                emptyDiv.style.display = 'block';
-                return;
+        function openGamesWindow() {
+            document.getElementById('gamesWindow').classList.add('active');
+            renderGames();
+            document.getElementById('startMenu').classList.remove('active');
+        }
+
+        function openSettings() {
+            document.getElementById('settingsWindow').classList.add('active');
+            document.getElementById('startMenu').classList.remove('active');
+        }
+
+        function closeWindow(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        function minimizeWindow(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        function maximizeWindow(id) {
+            const window = document.getElementById(id);
+            if (window.style.width === '100%') {
+                window.style.width = '90%';
+                window.style.height = '85%';
+            } else {
+                window.style.width = '100%';
+                window.style.height = '100%';
+                window.style.left = '0';
+                window.style.top = '0';
+                window.style.transform = 'none';
+                window.style.borderRadius = '0';
             }
+        }
 
-            grid.style.display = 'grid';
-            emptyDiv.style.display = 'none';
+        function renderGames() {
+            renderGameSection('classic', games.classic);
+            renderGameSection('modern', games.modern);
+            renderGameSection('online', games.online);
+        }
 
-            gamesToRender.forEach(game => {
-                const card = document.createElement('div');
-                card.className = 'game-card';
-                
-                let badgeHTML = '';
-                if (game.isEmulated) {
-                    badgeHTML = '<span class="emulator-badge"><i class="fas fa-bolt"></i> Now.gg</span>';
-                }
-                
-                card.innerHTML = `
-                    <div class="game-image">${game.emoji}</div>
-                    <div class="game-info">
-                        <h3>${game.name}</h3>
-                        <p>${game.description}</p>
-                        <div class="game-footer">
-                            ${badgeHTML}
-                            <button class="play-btn" onclick="playGame('${game.name}', '${game.url}', ${game.isEmulated ? 'true' : 'false'})">
-                                <i class="fas fa-play"></i> Jugar
-                            </button>
-                        </div>
+        function renderGameSection(category, gameList) {
+            const container = document.getElementById(category + 'Games');
+            container.innerHTML = '';
+            
+            gameList.forEach(game => {
+                const tile = document.createElement('div');
+                tile.className = 'game-tile';
+                tile.innerHTML = `
+                    <div class="game-tile-image">${game.emoji}</div>
+                    <div class="game-tile-info">
+                        <div class="game-tile-name">${game.name}</div>
+                        <div class="game-tile-desc">${game.desc}</div>
+                        <button class="game-tile-btn" onclick="window.open('${game.url}', '_blank')">Jugar</button>
                     </div>
                 `;
-                grid.appendChild(card);
+                container.appendChild(tile);
             });
         }
 
-        function playGame(name, url, isEmulated) {
-            const modal = document.getElementById('gameModal');
-            const title = document.getElementById('modalTitle');
-            const container = document.getElementById('gameContainer');
-
-            title.textContent = name;
-            
-            container.innerHTML = `
-                <p style="margin-bottom: 20px; color: #666; font-size: 13px;">
-                    <i class="fas fa-spinner fa-spin"></i> Cargando ${isEmulated ? 'en Now.gg' : ''}...
-                </p>
-                <iframe class="game-iframe" src="${url}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"></iframe>
-                <div class="modal-info">
-                    <i class="fas fa-info-circle"></i> Si el juego no carga, 
-                    <a href="${url}" target="_blank">abre en una nueva pestaña</a>
-                </div>
-            `;
-
-            modal.style.display = 'block';
+        function toggleFullscreen() {
+            const btn = document.querySelector('.fullscreen-btn i');
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    alert('Error al activar pantalla completa: ' + err.message);
+                });
+                btn.classList.remove('fa-expand');
+                btn.classList.add('fa-compress');
+            } else {
+                document.exitFullscreen();
+                btn.classList.remove('fa-compress');
+                btn.classList.add('fa-expand');
+            }
         }
 
-        function closeGame() {
-            document.getElementById('gameModal').style.display = 'none';
-        }
+        document.addEventListener('fullscreenchange', () => {
+            const btn = document.querySelector('.fullscreen-btn i');
+            if (document.fullscreenElement) {
+                btn.classList.remove('fa-expand');
+                btn.classList.add('fa-compress');
+            } else {
+                btn.classList.remove('fa-compress');
+                btn.classList.add('fa-expand');
+            }
+        });
 
-        function filterBySearch(searchTerm) {
-            const search = searchTerm.toLowerCase();
-
+        document.getElementById('gamesSearch').addEventListener('keyup', (e) => {
+            const search = e.target.value.toLowerCase();
             if (search === '') {
                 renderGames();
-                return;
-            }
-
-            const filteredClassic = games.classic.filter(game =>
-                game.name.toLowerCase().includes(search) ||
-                game.description.toLowerCase().includes(search)
-            );
-
-            const filteredModern = games.modern.filter(game =>
-                game.name.toLowerCase().includes(search) ||
-                game.description.toLowerCase().includes(search)
-            );
-
-            const filteredOnline = games.online.filter(game =>
-                game.name.toLowerCase().includes(search) ||
-                game.description.toLowerCase().includes(search)
-            );
-
-            renderSection('classic', filteredClassic);
-            renderSection('modern', filteredModern);
-            renderSection('online', filteredOnline);
-        }
-
-        function searchDuckGo() {
-            const query = document.getElementById('duckgoInput').value.trim();
-            if (query === '') {
-                alert('Por favor ingresa algo para buscar');
-                return;
-            }
-            const searchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
-            window.open(searchUrl, '_blank');
-        }
-
-        document.getElementById('searchInput').addEventListener('keyup', function(e) {
-            filterBySearch(e.target.value);
-        });
-
-        document.getElementById('duckgoInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                searchDuckGo();
+            } else {
+                const filtered = {
+                    classic: games.classic.filter(g => g.name.toLowerCase().includes(search)),
+                    modern: games.modern.filter(g => g.name.toLowerCase().includes(search)),
+                    online: games.online.filter(g => g.name.toLowerCase().includes(search))
+                };
+                renderGameSection('classic', filtered.classic);
+                renderGameSection('modern', filtered.modern);
+                renderGameSection('online', filtered.online);
             }
         });
 
-        window.onclick = function(event) {
-            const modal = document.getElementById('gameModal');
-            if (event.target === modal) {
-                modal.style.display = 'none';
+        document.addEventListener('click', (e) => {
+            const startMenu = document.getElementById('startMenu');
+            const startBtn = document.querySelector('.start-btn');
+            if (!startMenu.contains(e.target) && !startBtn.contains(e.target)) {
+                startMenu.classList.remove('active');
             }
-        }
-
-        renderGames();
+        });
     </script>
 </body>
 </html>
