@@ -20,11 +20,14 @@
         }
 
         header {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 20px 0;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 25px 0;
             text-align: center;
             border-bottom: 3px solid #667eea;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         header h1 {
@@ -41,37 +44,81 @@
 
         .container {
             max-width: 1200px;
-            margin: 40px auto;
+            margin: 0 auto;
             padding: 0 20px;
         }
 
         .search-bar {
-            margin: 30px 0;
+            margin: 35px 0;
             text-align: center;
         }
 
         .search-bar input {
             padding: 15px 20px;
             width: 100%;
-            max-width: 500px;
+            max-width: 600px;
             border: none;
             border-radius: 50px;
             font-size: 1em;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+        }
+
+        .search-bar input::placeholder {
+            color: #999;
         }
 
         .search-bar input:focus {
             outline: none;
             transform: scale(1.05);
             box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            background: #fff;
+        }
+
+        .section {
+            margin: 60px 0;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 2.2em;
+            margin-bottom: 30px;
+            color: #00ff88;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            border-left: 5px solid #667eea;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 3px;
         }
 
         .games-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 25px;
-            margin-top: 40px;
+            margin-top: 30px;
         }
 
         .game-card {
@@ -82,10 +129,11 @@
             transition: all 0.3s ease;
             border: 2px solid transparent;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
         }
 
         .game-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-10px) scale(1.02);
             background: rgba(255, 255, 255, 0.15);
             border-color: #00ff88;
             box-shadow: 0 12px 40px rgba(102, 126, 234, 0.4);
@@ -162,7 +210,7 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.9);
             animation: fadeIn 0.3s ease;
         }
 
@@ -217,14 +265,29 @@
             margin-bottom: 20px;
         }
 
-        .featured {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-            grid-column: span 2;
+        .hidden {
+            display: none !important;
         }
 
-        .featured .game-image {
-            height: 250px;
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+        .no-results {
+            text-align: center;
+            padding: 50px 20px;
+            color: #aaa;
+            font-size: 1.2em;
+        }
+
+        .no-results-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            margin-top: 60px;
+            border-top: 2px solid #667eea;
+            color: #aaa;
         }
 
         @media (max-width: 768px) {
@@ -233,12 +296,12 @@
                 gap: 15px;
             }
 
-            .featured {
-                grid-column: span 1;
-            }
-
             header h1 {
                 font-size: 1.8em;
+            }
+
+            .section-title {
+                font-size: 1.7em;
             }
 
             .game-iframe {
@@ -250,41 +313,14 @@
                 margin: 20% auto;
                 padding: 20px;
             }
+
+            .search-bar input {
+                max-width: 100%;
+            }
         }
 
-        .category-filter {
-            display: flex;
-            gap: 10px;
-            margin: 30px 0;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .category-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            border: 2px solid #667eea;
-            padding: 10px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: bold;
-        }
-
-        .category-btn:hover,
-        .category-btn.active {
-            background: #667eea;
-            border-color: #00ff88;
-            color: #fff;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            background: rgba(0, 0, 0, 0.8);
-            margin-top: 60px;
-            border-top: 2px solid #667eea;
-            color: #aaa;
+        .empty-section {
+            display: none;
         }
     </style>
 </head>
@@ -296,19 +332,43 @@
 
     <div class="container">
         <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="🔍 Buscar juegos...">
+            <input type="text" id="searchInput" placeholder="🔍 Buscar juegos (nombre, descripción)...">
         </div>
 
-        <div class="category-filter">
-            <button class="category-btn active" onclick="filterGames('all')">Todos</button>
-            <button class="category-btn" onclick="filterGames('arcade')">Arcade</button>
-            <button class="category-btn" onclick="filterGames('adventure')">Aventura</button>
-            <button class="category-btn" onclick="filterGames('puzzle')">Puzzles</button>
-            <button class="category-btn" onclick="filterGames('online')">Online</button>
+        <!-- SECCIÓN JUEGOS CLÁSICOS -->
+        <div class="section" id="classicSection">
+            <h2 class="section-title">🕹️ JUEGOS CLÁSICOS</h2>
+            <div class="games-grid" id="classicGames">
+                <!-- Los juegos clásicos se cargarán aquí -->
+            </div>
+            <div class="empty-section no-results" id="classicEmpty">
+                <div class="no-results-icon">🔍</div>
+                <p>No se encontraron juegos clásicos con tu búsqueda</p>
+            </div>
         </div>
 
-        <div class="games-grid" id="gamesGrid">
-            <!-- Los juegos se cargarán aquí con JavaScript -->
+        <!-- SECCIÓN JUEGOS MODERNOS -->
+        <div class="section" id="modernSection">
+            <h2 class="section-title">🚀 JUEGOS MODERNOS</h2>
+            <div class="games-grid" id="modernGames">
+                <!-- Los juegos modernos se cargarán aquí -->
+            </div>
+            <div class="empty-section no-results" id="modernEmpty">
+                <div class="no-results-icon">🔍</div>
+                <p>No se encontraron juegos modernos con tu búsqueda</p>
+            </div>
+        </div>
+
+        <!-- SECCIÓN JUEGOS ONLINE -->
+        <div class="section" id="onlineSection">
+            <h2 class="section-title">🌐 JUEGOS ONLINE</h2>
+            <div class="games-grid" id="onlineGames">
+                <!-- Los juegos online se cargarán aquí -->
+            </div>
+            <div class="empty-section no-results" id="onlineEmpty">
+                <div class="no-results-icon">🔍</div>
+                <p>No se encontraron juegos online con tu búsqueda</p>
+            </div>
         </div>
     </div>
 
@@ -327,115 +387,188 @@
     </footer>
 
     <script>
-        const games = [
-            {
-                id: 1,
-                name: 'Roblox',
-                emoji: '🟥',
-                category: 'online',
-                description: 'La plataforma de juegos online más popular',
-                url: 'https://www.roblox.com/'
-            },
-            {
-                id: 2,
-                name: 'Pac-Man',
-                emoji: '👾',
-                category: 'arcade',
-                description: 'El clásico juego de arcade',
-                url: 'https://phasergames.com/pacman/'
-            },
-            {
-                id: 3,
-                name: 'Snake',
-                emoji: '🐍',
-                category: 'puzzle',
-                description: 'El legendario juego de la serpiente',
-                url: 'https://www.playsnake.org/'
-            },
-            {
-                id: 4,
-                name: 'Tetris',
-                emoji: '🧱',
-                category: 'puzzle',
-                description: 'Encaja las piezas perfectamente',
-                url: 'https://tetris.com/'
-            },
-            {
-                id: 5,
-                name: 'Space Invaders',
-                emoji: '👽',
-                category: 'arcade',
-                description: 'Defiende la tierra de los invasores',
-                url: 'https://phasergames.com/spaceinvaders/'
-            },
-            {
-                id: 6,
-                name: 'Flappy Bird',
-                emoji: '🐦',
-                category: 'arcade',
-                description: 'El juego más adictivo de los últimos años',
-                url: 'https://flappybird.io/'
-            },
-            {
-                id: 7,
-                name: 'Minecraft',
-                emoji: '⛏️',
-                category: 'adventure',
-                description: 'Construye y explora mundos infinitos',
-                url: 'https://www.minecraft.net/'
-            },
-            {
-                id: 8,
-                name: '2048',
-                emoji: '🔢',
-                category: 'puzzle',
-                description: 'Combina números para llegar a 2048',
-                url: 'https://2048game.com/'
-            },
-            {
-                id: 9,
-                name: 'Dino Runner',
-                emoji: '🦕',
-                category: 'arcade',
-                description: 'Corre como un dinosaurio Chrome',
-                url: 'https://chromedino.com/'
-            },
-            {
-                id: 10,
-                name: 'Portal',
-                emoji: '🌀',
-                category: 'adventure',
-                description: 'Resuelve puzles con portales',
-                url: 'https://www.portalhq.com/'
-            },
-            {
-                id: 11,
-                name: 'The Legend of Zelda',
-                emoji: '🗡️',
-                category: 'adventure',
-                description: 'La aventura épica de Link',
-                url: 'https://classicgames.online/'
-            },
-            {
-                id: 12,
-                name: 'Among Us',
-                emoji: '👥',
-                category: 'online',
-                description: 'Encuentra al impostor entre tus amigos',
-                url: 'https://www.amongusgame.com/'
-            }
-        ];
+        const games = {
+            classic: [
+                {
+                    id: 1,
+                    name: 'Pac-Man',
+                    emoji: '👾',
+                    category: 'classic',
+                    description: 'El clásico juego de arcade que definió una era',
+                    url: 'https://phasergames.com/pacman/'
+                },
+                {
+                    id: 2,
+                    name: 'Snake',
+                    emoji: '🐍',
+                    category: 'classic',
+                    description: 'El legendario juego de la serpiente de los 90s',
+                    url: 'https://www.playsnake.org/'
+                },
+                {
+                    id: 3,
+                    name: 'Tetris',
+                    emoji: '🧱',
+                    category: 'classic',
+                    description: 'Encaja las piezas y alcanza el máximo puntaje',
+                    url: 'https://tetris.com/'
+                },
+                {
+                    id: 4,
+                    name: 'Space Invaders',
+                    emoji: '👽',
+                    category: 'classic',
+                    description: 'Defiende la tierra de los invasores alienígenas',
+                    url: 'https://phasergames.com/spaceinvaders/'
+                },
+                {
+                    id: 5,
+                    name: 'The Legend of Zelda',
+                    emoji: '🗡️',
+                    category: 'classic',
+                    description: 'La aventura épica de Link en Hyrule',
+                    url: 'https://classicgames.online/'
+                },
+                {
+                    id: 6,
+                    name: 'Dino Runner',
+                    emoji: '🦕',
+                    category: 'classic',
+                    description: 'Corre como el dinosaurio Chrome sin internet',
+                    url: 'https://chromedino.com/'
+                }
+            ],
+            modern: [
+                {
+                    id: 7,
+                    name: 'Minecraft',
+                    emoji: '⛏️',
+                    category: 'modern',
+                    description: 'Construye y explora mundos infinitos',
+                    url: 'https://www.minecraft.net/'
+                },
+                {
+                    id: 8,
+                    name: '2048',
+                    emoji: '🔢',
+                    category: 'modern',
+                    description: 'Combina números para llegar a 2048',
+                    url: 'https://2048game.com/'
+                },
+                {
+                    id: 9,
+                    name: 'Flappy Bird',
+                    emoji: '🐦',
+                    category: 'modern',
+                    description: 'El juego más adictivo de los últimos años',
+                    url: 'https://flappybird.io/'
+                },
+                {
+                    id: 10,
+                    name: 'Portal',
+                    emoji: '🌀',
+                    category: 'modern',
+                    description: 'Resuelve puzles complejos con portales',
+                    url: 'https://www.portalhq.com/'
+                },
+                {
+                    id: 11,
+                    name: 'Geometry Dash',
+                    emoji: '🟨',
+                    category: 'modern',
+                    description: 'Juego de ritmo adictivo y desafiante',
+                    url: 'https://geometrydash.io/'
+                },
+                {
+                    id: 12,
+                    name: 'Subway Surfers',
+                    emoji: '🚇',
+                    category: 'modern',
+                    description: 'Corre y esquiva en el metro infinito',
+                    url: 'https://subwaysurfersplay.org/'
+                }
+            ],
+            online: [
+                {
+                    id: 13,
+                    name: 'Roblox',
+                    emoji: '🟥',
+                    category: 'online',
+                    description: 'La plataforma de juegos online más popular',
+                    url: 'https://www.roblox.com/'
+                },
+                {
+                    id: 14,
+                    name: 'Among Us',
+                    emoji: '👥',
+                    category: 'online',
+                    description: 'Encuentra al impostor entre tus amigos',
+                    url: 'https://www.amongusgame.com/'
+                },
+                {
+                    id: 15,
+                    name: 'Fortnite',
+                    emoji: '🎯',
+                    category: 'online',
+                    description: 'Battle royale multijugador en línea',
+                    url: 'https://www.fortnite.com/'
+                },
+                {
+                    id: 16,
+                    name: 'League of Legends',
+                    emoji: '⚔️',
+                    category: 'online',
+                    description: 'El MOBA más popular del mundo',
+                    url: 'https://www.leagueoflegends.com/'
+                },
+                {
+                    id: 17,
+                    name: 'Agar.io',
+                    emoji: '⭕',
+                    category: 'online',
+                    description: 'Multijugador: crece comiendo a otros',
+                    url: 'https://agar.io/'
+                },
+                {
+                    id: 18,
+                    name: 'Skribbl.io',
+                    emoji: '🎨',
+                    category: 'online',
+                    description: 'Juego de dibujo y adivinanza multijugador',
+                    url: 'https://skribbl.io/'
+                }
+            ]
+        };
 
-        let currentFilter = 'all';
+        let currentSearch = '';
 
-        function renderGames(gamesToRender = games) {
-            const grid = document.getElementById('gamesGrid');
+        function renderGames() {
+            renderSection('classic', games.classic);
+            renderSection('modern', games.modern);
+            renderSection('online', games.online);
+        }
+
+        function renderSection(category, gamesToRender) {
+            const grid = document.getElementById(category + 'Games');
+            const emptyDiv = document.getElementById(category + 'Empty');
+            const section = document.getElementById(category + 'Section');
+            
             grid.innerHTML = '';
+
+            if (gamesToRender.length === 0) {
+                grid.style.display = 'none';
+                emptyDiv.style.display = 'block';
+                section.style.display = 'block';
+                return;
+            }
+
+            grid.style.display = 'grid';
+            emptyDiv.style.display = 'none';
+            section.style.display = 'block';
 
             gamesToRender.forEach(game => {
                 const card = document.createElement('div');
                 card.className = 'game-card';
-                if (game.category === 'online') card.classList.add('featured');
                 
                 card.innerHTML = `
                     <div class="game-image">${game.emoji}</div>
@@ -472,27 +605,36 @@
             document.getElementById('gameModal').style.display = 'none';
         }
 
-        function filterGames(category) {
-            currentFilter = category;
-            const buttons = document.querySelectorAll('.category-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+        function filterBySearch(searchTerm) {
+            currentSearch = searchTerm.toLowerCase();
 
-            if (category === 'all') {
-                renderGames(games);
-            } else {
-                const filtered = games.filter(game => game.category === category);
-                renderGames(filtered);
+            if (currentSearch === '') {
+                renderGames();
+                return;
             }
+
+            const filteredClassic = games.classic.filter(game =>
+                game.name.toLowerCase().includes(currentSearch) ||
+                game.description.toLowerCase().includes(currentSearch)
+            );
+
+            const filteredModern = games.modern.filter(game =>
+                game.name.toLowerCase().includes(currentSearch) ||
+                game.description.toLowerCase().includes(currentSearch)
+            );
+
+            const filteredOnline = games.online.filter(game =>
+                game.name.toLowerCase().includes(currentSearch) ||
+                game.description.toLowerCase().includes(currentSearch)
+            );
+
+            renderSection('classic', filteredClassic);
+            renderSection('modern', filteredModern);
+            renderSection('online', filteredOnline);
         }
 
         document.getElementById('searchInput').addEventListener('keyup', function(e) {
-            const search = e.target.value.toLowerCase();
-            const filtered = games.filter(game => 
-                game.name.toLowerCase().includes(search) ||
-                game.description.toLowerCase().includes(search)
-            );
-            renderGames(filtered);
+            filterBySearch(e.target.value);
         });
 
         window.onclick = function(event) {
