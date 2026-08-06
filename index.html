@@ -157,12 +157,14 @@
             left: 0;
             overflow: hidden;
             background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.02)" stroke-width="1"/></pattern></defs><rect width="1920" height="1080" fill="url(%23grid)"/></svg>');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            flex-direction: column;
         }
 
         .desktop.active {
             display: flex;
-            flex-direction: column;
         }
 
         .desktop-main {
@@ -814,6 +816,32 @@
             left: 26px;
         }
 
+        /* ============ BACKGROUND PICKER ============ */
+        .background-colors {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .color-option {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .color-option.selected {
+            border-color: #0078d4;
+            box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.3);
+        }
+
         /* ============ TASK MANAGER ============ */
         .taskmanager-window {
             width: 800px;
@@ -1004,17 +1032,16 @@
     <!-- DESKTOP -->
     <div class="desktop" id="desktop">
         <div class="desktop-main">
-            <!-- DESKTOP ICONS -->
             <div class="desktop-icons">
-                <div class="desktop-icon" onclick="openWindow('gamesWindow')">
+                <div class="desktop-icon" onclick="openGames()">
                     <div class="desktop-icon-box">🎮</div>
                     <div class="desktop-icon-label">Juegos</div>
                 </div>
-                <div class="desktop-icon" onclick="openWindow('settingsWindow')">
+                <div class="desktop-icon" onclick="openSettings()">
                     <div class="desktop-icon-box">⚙️</div>
                     <div class="desktop-icon-label">Configuración</div>
                 </div>
-                <div class="desktop-icon" onclick="openWindow('taskmanagerWindow')">
+                <div class="desktop-icon" onclick="openTaskManager()">
                     <div class="desktop-icon-box">📊</div>
                     <div class="desktop-icon-label">Administrador de Tareas</div>
                 </div>
@@ -1025,71 +1052,48 @@
         <div class="taskbar">
             <div class="taskbar-left">
                 <button class="start-btn" onclick="toggleStartMenu()">⊞</button>
-                <button class="taskbar-icon" onclick="openWindow('gamesWindow')" title="Juegos">
-                    <i class="fas fa-gamepad"></i>
-                </button>
-                <button class="taskbar-icon" title="Navegador">
-                    <i class="fas fa-globe"></i>
-                </button>
-                <button class="taskbar-icon" title="Explorador de Archivos">
-                    <i class="fas fa-folder"></i>
-                </button>
+                <div class="taskbar-separator"></div>
+                <div class="taskbar-apps">
+                    <div class="taskbar-icon" onclick="openGames()" title="Juegos">🎮</div>
+                    <div class="taskbar-icon" onclick="openSettings()" title="Configuración">⚙️</div>
+                    <div class="taskbar-icon" onclick="openTaskManager()" title="Administrador">📊</div>
+                </div>
             </div>
-
-            <div class="taskbar-separator"></div>
-
             <div class="taskbar-right">
-                <button class="system-tray-icon" onclick="openWindow('settingsWindow')" title="Configuración">
-                    <i class="fas fa-cog"></i>
-                </button>
-                <button class="system-tray-icon" title="Volumen">
-                    <i class="fas fa-volume-up"></i>
-                </button>
-                <button class="system-tray-icon" title="Conexión">
-                    <i class="fas fa-wifi"></i>
-                </button>
-                <div class="time-display" id="timeDisplay">22:30</div>
+                <div class="system-tray">
+                    <div class="system-tray-icon" title="Volumen">🔊</div>
+                    <div class="system-tray-icon" onclick="logout()" title="Cerrar Sesión">🚪</div>
+                </div>
+                <div class="time-display" id="timeDisplay">00:00</div>
             </div>
         </div>
 
         <!-- START MENU -->
         <div class="start-menu" id="startMenu">
             <div class="start-menu-header">
-                <input type="text" class="start-menu-search" placeholder="Escribe para buscar...">
+                <input type="text" class="start-menu-search" placeholder="Buscar aplicaciones...">
             </div>
             <div class="start-menu-content">
                 <div class="start-menu-section">
-                    <div class="start-menu-label">Fijado</div>
+                    <div class="start-menu-label">Aplicaciones</div>
                     <div class="start-menu-apps">
-                        <div class="start-menu-item" onclick="openWindow('gamesWindow'); toggleStartMenu();">
+                        <div class="start-menu-item" onclick="openGames(); toggleStartMenu();">
                             <div class="start-menu-item-icon">🎮</div>
                             <div class="start-menu-item-name">Juegos</div>
                         </div>
-                        <div class="start-menu-item" onclick="openWindow('settingsWindow'); toggleStartMenu();">
+                        <div class="start-menu-item" onclick="openSettings(); toggleStartMenu();">
                             <div class="start-menu-item-icon">⚙️</div>
                             <div class="start-menu-item-name">Configuración</div>
                         </div>
-                        <div class="start-menu-item" onclick="openWindow('taskmanagerWindow'); toggleStartMenu();">
+                        <div class="start-menu-item" onclick="openTaskManager(); toggleStartMenu();">
                             <div class="start-menu-item-icon">📊</div>
                             <div class="start-menu-item-name">Administrador</div>
                         </div>
-                        <div class="start-menu-item">
-                            <div class="start-menu-item-icon">🌐</div>
-                            <div class="start-menu-item-name">Navegador</div>
+                        <div class="start-menu-item" onclick="logout()">
+                            <div class="start-menu-item-icon">🚪</div>
+                            <div class="start-menu-item-name">Cerrar Sesión</div>
                         </div>
                     </div>
-                </div>
-                <div class="start-menu-section">
-                    <div class="start-menu-label">Recomendado</div>
-                    <button class="start-menu-button">
-                        <i class="fas fa-file-alt"></i> Documentos
-                    </button>
-                    <button class="start-menu-button">
-                        <i class="fas fa-download"></i> Descargas
-                    </button>
-                    <button class="start-menu-button">
-                        <i class="fas fa-image"></i> Imágenes
-                    </button>
                 </div>
             </div>
         </div>
@@ -1098,36 +1102,54 @@
     <!-- GAMES WINDOW -->
     <div class="window games-window" id="gamesWindow">
         <div class="window-header">
-            <div class="window-title">
-                <i class="fas fa-gamepad"></i>
-                Crazy Studios - Emulador de Juegos
-            </div>
+            <div class="window-title">🎮 Juegos</div>
             <div class="window-controls">
-                <button class="window-btn" onclick="minimizeWindow('gamesWindow')"><i class="fas fa-minus"></i></button>
-                <button class="window-btn" onclick="maximizeWindow('gamesWindow')"><i class="fas fa-square"></i></button>
-                <button class="window-btn close" onclick="closeWindow('gamesWindow')"><i class="fas fa-times"></i></button>
+                <button class="window-btn" onclick="closeWindow('gamesWindow')">✕</button>
             </div>
         </div>
         <div class="window-content">
             <div class="games-container">
                 <div class="search-box">
-                    <input type="text" class="search-input" id="gamesSearch" placeholder="Buscar juegos...">
+                    <input type="text" class="search-input" placeholder="Buscar juego...">
                     <button class="search-btn">Buscar</button>
                 </div>
 
                 <div class="games-section">
-                    <div class="section-title">🕹️ Juegos Clásicos</div>
-                    <div class="games-grid" id="classicGames"></div>
-                </div>
-
-                <div class="games-section">
-                    <div class="section-title">🚀 Juegos Modernos</div>
-                    <div class="games-grid" id="modernGames"></div>
-                </div>
-
-                <div class="games-section">
-                    <div class="section-title">🌐 Juegos Online (Now.gg)</div>
-                    <div class="games-grid" id="onlineGames"></div>
+                    <div class="section-title">Juegos Populares</div>
+                    <div class="games-grid">
+                        <div class="game-tile">
+                            <div class="game-tile-image">🕹️</div>
+                            <div class="game-tile-info">
+                                <div class="game-tile-name">Retro Game</div>
+                                <div class="game-tile-desc">Diversión clásica</div>
+                                <button class="game-tile-btn">Jugar</button>
+                            </div>
+                        </div>
+                        <div class="game-tile">
+                            <div class="game-tile-image">🎯</div>
+                            <div class="game-tile-info">
+                                <div class="game-tile-name">Arcade</div>
+                                <div class="game-tile-desc">Acción rápida</div>
+                                <button class="game-tile-btn">Jugar</button>
+                            </div>
+                        </div>
+                        <div class="game-tile">
+                            <div class="game-tile-image">⚡</div>
+                            <div class="game-tile-info">
+                                <div class="game-tile-name">Speed</div>
+                                <div class="game-tile-desc">Velocidad máxima</div>
+                                <button class="game-tile-btn">Jugar</button>
+                            </div>
+                        </div>
+                        <div class="game-tile">
+                            <div class="game-tile-image">🎪</div>
+                            <div class="game-tile-info">
+                                <div class="game-tile-name">Party</div>
+                                <div class="game-tile-desc">Multijugador</div>
+                                <button class="game-tile-btn">Jugar</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1136,42 +1158,121 @@
     <!-- SETTINGS WINDOW -->
     <div class="window settings-window" id="settingsWindow">
         <div class="window-header">
-            <div class="window-title">
-                <i class="fas fa-cog"></i>
-                Configuración
-            </div>
+            <div class="window-title">⚙️ Configuración</div>
             <div class="window-controls">
-                <button class="window-btn close" onclick="closeWindow('settingsWindow')"><i class="fas fa-times"></i></button>
+                <button class="window-btn" onclick="closeWindow('settingsWindow')">✕</button>
             </div>
         </div>
         <div class="window-content" style="display: flex;">
             <div class="settings-sidebar">
-                <div class="settings-search">
-                    <input type="text" placeholder="Buscar en configuración...">
-                </div>
                 <div class="settings-nav">
-                    <div class="settings-nav-item active" onclick="switchSettings('system')">
-                        <i class="fas fa-laptop"></i> Sistema
+                    <div class="settings-nav-item active" onclick="switchSettings(0)">
+                        <i class="fas fa-paint-brush"></i> Pantalla
                     </div>
-                    <div class="settings-nav-item" onclick="switchSettings('devices')">
-                        <i class="fas fa-mouse"></i> Dispositivos
+                    <div class="settings-nav-item" onclick="switchSettings(1)">
+                        <i class="fas fa-sliders-h"></i> Audio
                     </div>
-                    <div class="settings-nav-item" onclick="switchSettings('network')">
-                        <i class="fas fa-wifi"></i> Red e Internet
+                    <div class="settings-nav-item" onclick="switchSettings(2)">
+                        <i class="fas fa-keyboard"></i> Controles
                     </div>
-                    <div class="settings-nav-item" onclick="switchSettings('personalization')">
-                        <i class="fas fa-palette"></i> Personalización
-                    </div>
-                    <div class="settings-nav-item" onclick="switchSettings('accounts')">
-                        <i class="fas fa-user"></i> Cuentas
-                    </div>
-                    <div class="settings-nav-item" onclick="switchSettings('security')">
-                        <i class="fas fa-shield"></i> Seguridad
+                    <div class="settings-nav-item" onclick="switchSettings(3)">
+                        <i class="fas fa-info-circle"></i> Acerca de
                     </div>
                 </div>
             </div>
             <div class="settings-content">
-                <div id="settingsContent"></div>
+                <!-- Display Settings -->
+                <div id="setting-0" class="settings-panel">
+                    <div class="settings-section">
+                        <div class="settings-section-title">Fondo de Pantalla</div>
+                        <div class="background-colors">
+                            <div class="color-option selected" style="background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);" onclick="changeBackground('linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%)', this)"></div>
+                            <div class="color-option" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);" onclick="changeBackground('linear-gradient(135deg, #667eea 0%, #764ba2 100%)', this)"></div>
+                            <div class="color-option" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);" onclick="changeBackground('linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', this)"></div>
+                            <div class="color-option" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);" onclick="changeBackground('linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', this)"></div>
+                            <div class="color-option" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);" onclick="changeBackground('linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)', this)"></div>
+                            <div class="color-option" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);" onclick="changeBackground('linear-gradient(135deg, #fa709a 0%, #fee140 100%)', this)"></div>
+                            <div class="color-option" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);" onclick="changeBackground('linear-gradient(135deg, #30cfd0 0%, #330867 100%)', this)"></div>
+                            <div class="color-option" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);" onclick="changeBackground('linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)', this)"></div>
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <div class="settings-section-title">Brillo</div>
+                        <div class="settings-item">
+                            <div class="settings-label">Brillo: <span id="brightnessValue">100</span>%</div>
+                            <input type="range" min="30" max="150" value="100" onchange="changeBrightness(this.value)" style="width: 150px;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audio Settings -->
+                <div id="setting-1" class="settings-panel" style="display: none;">
+                    <div class="settings-section">
+                        <div class="settings-section-title">Audio</div>
+                        <div class="settings-item">
+                            <div>
+                                <div class="settings-label">Volumen General</div>
+                                <div class="settings-label-desc">Controla el volumen principal</div>
+                            </div>
+                            <button class="toggle-switch active" onclick="toggleVolume(this)"></button>
+                        </div>
+                        <div class="settings-item">
+                            <div>
+                                <div class="settings-label">Efectos de Sonido</div>
+                                <div class="settings-label-desc">Sonidos de la interfaz</div>
+                            </div>
+                            <button class="toggle-switch active" onclick="toggleEffects(this)"></button>
+                        </div>
+                        <div class="settings-item">
+                            <div>
+                                <div class="settings-label">Música</div>
+                                <div class="settings-label-desc">Música de fondo</div>
+                            </div>
+                            <button class="toggle-switch active" onclick="toggleMusic(this)"></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Controls Settings -->
+                <div id="setting-2" class="settings-panel" style="display: none;">
+                    <div class="settings-section">
+                        <div class="settings-section-title">Controles</div>
+                        <div class="settings-item">
+                            <div>
+                                <div class="settings-label">Animaciones</div>
+                                <div class="settings-label-desc">Habilitar animaciones del sistema</div>
+                            </div>
+                            <button class="toggle-switch active" onclick="toggleAnimations(this)"></button>
+                        </div>
+                        <div class="settings-item">
+                            <div>
+                                <div class="settings-label">Transiciones Suaves</div>
+                                <div class="settings-label-desc">Transiciones de ventanas</div>
+                            </div>
+                            <button class="toggle-switch active" onclick="toggleTransitions(this)"></button>
+                        </div>
+                        <div class="settings-item">
+                            <div>
+                                <div class="settings-label">Modo Oscuro</div>
+                                <div class="settings-label-desc">Tema oscuro en interfaces</div>
+                            </div>
+                            <button class="toggle-switch active" onclick="toggleDarkMode(this)"></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About -->
+                <div id="setting-3" class="settings-panel" style="display: none;">
+                    <div class="settings-section">
+                        <div class="settings-section-title">Acerca de</div>
+                        <div class="settings-item" style="flex-direction: column; align-items: flex-start;">
+                            <div class="settings-label">Windows 11 - Crazy Studios Gaming Emulator</div>
+                            <div class="settings-label-desc" style="margin-top: 8px;">Versión: 1.0.0</div>
+                            <div class="settings-label-desc">© 2024 Crazy Studios - Todos los derechos reservados</div>
+                            <div class="settings-label-desc" style="margin-top: 16px;">Este es un emulador de Windows 11 creado con fines educativos y de entretenimiento.</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1179,236 +1280,245 @@
     <!-- TASK MANAGER WINDOW -->
     <div class="window taskmanager-window" id="taskmanagerWindow">
         <div class="window-header">
-            <div class="window-title">
-                <i class="fas fa-tasks"></i>
-                Administrador de Tareas
-            </div>
+            <div class="window-title">📊 Administrador de Tareas</div>
             <div class="window-controls">
-                <button class="window-btn close" onclick="closeWindow('taskmanagerWindow')"><i class="fas fa-times"></i></button>
+                <button class="window-btn" onclick="closeWindow('taskmanagerWindow')">✕</button>
             </div>
         </div>
-        <div class="window-content" style="display: flex; flex-direction: column;">
+        <div class="window-content">
             <div class="taskmanager-tabs">
-                <div class="taskmanager-tab active">Procesos</div>
-                <div class="taskmanager-tab">Rendimiento</div>
-                <div class="taskmanager-tab">Inicio</div>
-                <div class="taskmanager-tab">Servicios</div>
+                <div class="taskmanager-tab active" onclick="switchTaskTab(0)">Procesos</div>
+                <div class="taskmanager-tab" onclick="switchTaskTab(1)">Rendimiento</div>
+                <div class="taskmanager-tab" onclick="switchTaskTab(2)">Red</div>
             </div>
-            <div class="taskmanager-content" id="taskmanagerContent"></div>
+            <div class="taskmanager-content" id="taskTab-0">
+                <div class="process-item">
+                    <div class="process-name">⊞ Windows</div>
+                    <div class="process-stats">
+                        <span>CPU: 2%</span>
+                        <span>RAM: 245MB</span>
+                    </div>
+                </div>
+                <div class="process-item">
+                    <div class="process-name">🎮 Games Manager</div>
+                    <div class="process-stats">
+                        <span>CPU: 5%</span>
+                        <span>RAM: 512MB</span>
+                    </div>
+                </div>
+                <div class="process-item">
+                    <div class="process-name">⚙️ Settings</div>
+                    <div class="process-stats">
+                        <span>CPU: 1%</span>
+                        <span>RAM: 128MB</span>
+                    </div>
+                </div>
+                <div class="process-item">
+                    <div class="process-name">📊 Explorer</div>
+                    <div class="process-stats">
+                        <span>CPU: 3%</span>
+                        <span>RAM: 456MB</span>
+                    </div>
+                </div>
+                <div class="process-item">
+                    <div class="process-name">🔊 Audio Service</div>
+                    <div class="process-stats">
+                        <span>CPU: 0.5%</span>
+                        <span>RAM: 64MB</span>
+                    </div>
+                </div>
+            </div>
+            <div class="taskmanager-content" id="taskTab-1" style="display: none;">
+                <div class="settings-section">
+                    <div class="settings-section-title">Rendimiento del Sistema</div>
+                    <div class="settings-item">
+                        <div class="settings-label">CPU</div>
+                        <div style="width: 100px; height: 8px; background: #e0e0e0; border-radius: 4px;">
+                            <div style="width: 28%; height: 100%; background: #0078d4; border-radius: 4px;"></div>
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-label">Memoria</div>
+                        <div style="width: 100px; height: 8px; background: #e0e0e0; border-radius: 4px;">
+                            <div style="width: 42%; height: 100%; background: #00b4ef; border-radius: 4px;"></div>
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-label">Almacenamiento</div>
+                        <div style="width: 100px; height: 8px; background: #e0e0e0; border-radius: 4px;">
+                            <div style="width: 68%; height: 100%; background: #106ebe; border-radius: 4px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="taskmanager-content" id="taskTab-2" style="display: none;">
+                <div class="settings-section">
+                    <div class="settings-section-title">Red</div>
+                    <div class="settings-item">
+                        <div class="settings-label">Conectividad: En Línea ✓</div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-label">Velocidad: 100 Mbps</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- FULLSCREEN BUTTON -->
-    <button class="fullscreen-btn" onclick="toggleFullscreen()" title="Pantalla Completa">
-        <i class="fas fa-expand"></i>
-    </button>
+    <button class="fullscreen-btn" onclick="goFullscreen()" title="Pantalla Completa">⛶</button>
 
     <script>
-        const games = {
-            classic: [
-                { name: 'Pac-Man', emoji: '👾', desc: 'Juego Arcade Clásico', url: 'https://phasergames.com/pacman/' },
-                { name: 'Snake', emoji: '🐍', desc: 'Juego Retro', url: 'https://www.playsnake.org/' },
-                { name: 'Tetris', emoji: '🧱', desc: 'Bloques', url: 'https://tetris.com/' },
-                { name: 'Space Invaders', emoji: '👽', desc: 'Disparos', url: 'https://phasergames.com/spaceinvaders/' },
-                { name: 'Zelda', emoji: '🗡️', desc: 'Aventura', url: 'https://classicgames.online/' },
-                { name: 'Dino Runner', emoji: '🦕', desc: 'Carreras', url: 'https://chromedino.com/' }
-            ],
-            modern: [
-                { name: 'Minecraft', emoji: '⛏️', desc: 'Construcción', url: 'https://www.minecraft.net/' },
-                { name: '2048', emoji: '🔢', desc: 'Números', url: 'https://2048game.com/' },
-                { name: 'Flappy Bird', emoji: '🐦', desc: 'Acción', url: 'https://flappybird.io/' },
-                { name: 'Portal', emoji: '🌀', desc: 'Puzles', url: 'https://www.portalhq.com/' },
-                { name: 'Geometry Dash', emoji: '🟨', desc: 'Ritmo', url: 'https://geometrydash.io/' },
-                { name: 'Subway Surfers', emoji: '🚇', desc: 'Carreras', url: 'https://subwaysurfersplay.org/' }
-            ],
-            online: [
-                { name: 'Roblox', emoji: '🟥', desc: 'Multijugador', url: 'https://now.gg/play/roblox/49513' },
-                { name: 'Among Us', emoji: '👥', desc: 'Social', url: 'https://now.gg/play/among-us/40000' },
-                { name: 'Fortnite', emoji: '🎯', desc: 'Battle Royale', url: 'https://now.gg/play/fortnite/4131' },
-                { name: 'League of Legends', emoji: '⚔️', desc: 'MOBA', url: 'https://now.gg/play/league-of-legends/1486' },
-                { name: 'PUBG Mobile', emoji: '🔫', desc: 'Battle Royale', url: 'https://now.gg/play/pubg-mobile/22601' },
-                { name: 'Call of Duty', emoji: '🎮', desc: 'FPS', url: 'https://now.gg/play/call-of-duty-mobile/5353' }
-            ]
-        };
+        // Variables globales
+        let currentBackground = 'linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%)';
 
+        // Actualizar hora
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('timeDisplay').textContent = `${hours}:${minutes}`;
+        }
+
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Login
         function login() {
-            const user = document.getElementById('username').value;
-            if (user.trim()) {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === 'Gamer' && password === '1234') {
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('desktop').classList.add('active');
-                updateTime();
-                setInterval(updateTime, 60000);
-                renderGames();
-                initSettings();
-                initTaskManager();
+                localStorage.setItem('background', currentBackground);
+            } else {
+                alert('Usuario o contraseña incorrectos');
             }
         }
 
-        function updateTime() {
-            const now = new Date();
-            document.getElementById('timeDisplay').textContent = 
-                String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+        // Logout
+        function logout() {
+            document.getElementById('desktop').classList.remove('active');
+            document.getElementById('loginScreen').style.display = 'flex';
+            closeAllWindows();
         }
 
+        // Cambiar fondo
+        function changeBackground(gradient, element) {
+            currentBackground = gradient;
+            document.getElementById('desktop').style.background = gradient;
+            localStorage.setItem('background', gradient);
+
+            // Actualizar selector visual
+            document.querySelectorAll('.color-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            element.classList.add('selected');
+        }
+
+        // Brillo
+        function changeBrightness(value) {
+            document.getElementById('desktop').style.filter = `brightness(${value}%)`;
+            document.getElementById('brightnessValue').textContent = value;
+            localStorage.setItem('brightness', value);
+        }
+
+        // Toggle Start Menu
         function toggleStartMenu() {
-            document.getElementById('startMenu').classList.toggle('active');
+            const menu = document.getElementById('startMenu');
+            menu.classList.toggle('active');
         }
 
-        function openWindow(id) {
-            document.getElementById(id).classList.add('active');
+        // Cerrar ventana
+        function closeWindow(windowId) {
+            document.getElementById(windowId).classList.remove('active');
+        }
+
+        // Cerrar todas las ventanas
+        function closeAllWindows() {
+            document.querySelectorAll('.window').forEach(w => w.classList.remove('active'));
+        }
+
+        // Abrir Juegos
+        function openGames() {
+            closeAllWindows();
+            document.getElementById('gamesWindow').classList.add('active');
             document.getElementById('startMenu').classList.remove('active');
         }
 
-        function closeWindow(id) {
-            document.getElementById(id).classList.remove('active');
+        // Abrir Configuración
+        function openSettings() {
+            closeAllWindows();
+            document.getElementById('settingsWindow').classList.add('active');
+            document.getElementById('startMenu').classList.remove('active');
         }
 
-        function minimizeWindow(id) {
-            document.getElementById(id).style.display = 'none';
+        // Abrir Administrador de Tareas
+        function openTaskManager() {
+            closeAllWindows();
+            document.getElementById('taskmanagerWindow').classList.add('active');
+            document.getElementById('startMenu').classList.remove('active');
         }
 
-        function maximizeWindow(id) {
-            const win = document.getElementById(id);
-            if (win.style.width === '100%') {
-                win.style.width = win.dataset.originalWidth || '85%';
-                win.style.height = win.dataset.originalHeight || '80%';
-                win.style.borderRadius = '10px';
-            } else {
-                win.dataset.originalWidth = win.style.width;
-                win.dataset.originalHeight = win.style.height;
-                win.style.width = '100%';
-                win.style.height = '100%';
-                win.style.left = '0';
-                win.style.top = '0';
-                win.style.transform = 'none';
-                win.style.borderRadius = '0';
-            }
-        }
+        // Cambiar panel de configuración
+        function switchSettings(index) {
+            document.querySelectorAll('.settings-panel').forEach(p => p.style.display = 'none');
+            document.getElementById(`setting-${index}`).style.display = 'block';
 
-        function renderGames() {
-            ['classic', 'modern', 'online'].forEach(cat => {
-                const grid = document.getElementById(cat + 'Games');
-                grid.innerHTML = '';
-                games[cat].forEach(game => {
-                    const tile = document.createElement('div');
-                    tile.className = 'game-tile';
-                    tile.innerHTML = `
-                        <div class="game-tile-image">${game.emoji}</div>
-                        <div class="game-tile-info">
-                            <div class="game-tile-name">${game.name}</div>
-                            <div class="game-tile-desc">${game.desc}</div>
-                            <button class="game-tile-btn" onclick="window.open('${game.url}', '_blank')">Jugar</button>
-                        </div>
-                    `;
-                    grid.appendChild(tile);
-                });
+            document.querySelectorAll('.settings-nav-item').forEach(item => {
+                item.classList.remove('active');
             });
-        }
-
-        function initSettings() {
-            const content = `
-                <div class="settings-section">
-                    <div class="settings-section-title">Pantalla</div>
-                    <div class="settings-item">
-                        <div>
-                            <div class="settings-label">Brillo</div>
-                            <div class="settings-label-desc">Ajusta el brillo de la pantalla</div>
-                        </div>
-                        <input type="range" min="0" max="100" value="80" style="width: 100px;">
-                    </div>
-                    <div class="settings-item">
-                        <div>
-                            <div class="settings-label">Modo Oscuro</div>
-                            <div class="settings-label-desc">Reduce la fatiga visual</div>
-                        </div>
-                        <button class="toggle-switch"></button>
-                    </div>
-                </div>
-                <div class="settings-section">
-                    <div class="settings-section-title">Sonido</div>
-                    <div class="settings-item">
-                        <div>
-                            <div class="settings-label">Volumen</div>
-                            <div class="settings-label-desc">Nivel de volumen general</div>
-                        </div>
-                        <input type="range" min="0" max="100" value="70" style="width: 100px;">
-                    </div>
-                    <div class="settings-item">
-                        <div>
-                            <div class="settings-label">Sonidos del Sistema</div>
-                            <div class="settings-label-desc">Sonidos de notificación</div>
-                        </div>
-                        <button class="toggle-switch active"></button>
-                    </div>
-                </div>
-            `;
-            document.getElementById('settingsContent').innerHTML = content;
-        }
-
-        function switchSettings(section) {
-            document.querySelectorAll('.settings-nav-item').forEach(el => el.classList.remove('active'));
             event.target.closest('.settings-nav-item').classList.add('active');
-            initSettings();
         }
 
-        function initTaskManager() {
-            const content = `
-                <div class="process-item">
-                    <div class="process-name">Windows Explorer</div>
-                    <div class="process-stats">
-                        <span>CPU: 2.1%</span>
-                        <span>RAM: 256 MB</span>
-                    </div>
-                </div>
-                <div class="process-item">
-                    <div class="process-name">Microsoft Edge</div>
-                    <div class="process-stats">
-                        <span>CPU: 5.3%</span>
-                        <span>RAM: 512 MB</span>
-                    </div>
-                </div>
-                <div class="process-item">
-                    <div class="process-name">Crazy Studios</div>
-                    <div class="process-stats">
-                        <span>CPU: 1.2%</span>
-                        <span>RAM: 128 MB</span>
-                    </div>
-                </div>
-                <div class="process-item">
-                    <div class="process-name">Sistema</div>
-                    <div class="process-stats">
-                        <span>CPU: 3.5%</span>
-                        <span>RAM: 1024 MB</span>
-                    </div>
-                </div>
-            `;
-            document.getElementById('taskmanagerContent').innerHTML = content;
+        // Cambiar pestaña del Administrador de Tareas
+        function switchTaskTab(index) {
+            document.querySelectorAll('[id^="taskTab-"]').forEach(tab => {
+                tab.style.display = 'none';
+            });
+            document.getElementById(`taskTab-${index}`).style.display = 'block';
+
+            document.querySelectorAll('.taskmanager-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
         }
 
-        function toggleFullscreen() {
-            const btn = document.querySelector('.fullscreen-btn i');
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.log('Error:', err.message);
-                });
-                btn.classList.remove('fa-expand');
-                btn.classList.add('fa-compress');
-            } else {
-                document.exitFullscreen();
-                btn.classList.remove('fa-compress');
-                btn.classList.add('fa-expand');
+        // Toggles de configuración
+        function toggleVolume(btn) { btn.classList.toggle('active'); }
+        function toggleEffects(btn) { btn.classList.toggle('active'); }
+        function toggleMusic(btn) { btn.classList.toggle('active'); }
+        function toggleAnimations(btn) { btn.classList.toggle('active'); }
+        function toggleTransitions(btn) { btn.classList.toggle('active'); }
+        function toggleDarkMode(btn) { btn.classList.toggle('active'); }
+
+        // Pantalla completa
+        function goFullscreen() {
+            const desktop = document.getElementById('desktop');
+            if (desktop.requestFullscreen) {
+                desktop.requestFullscreen();
             }
         }
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && document.getElementById('loginScreen').style.display !== 'none') {
-                login();
+        // Cargar datos guardados
+        window.addEventListener('load', () => {
+            const saved = localStorage.getItem('background');
+            if (saved) {
+                currentBackground = saved;
+                document.getElementById('desktop').style.background = saved;
+            }
+            const brightness = localStorage.getItem('brightness');
+            if (brightness) {
+                document.getElementById('desktop').style.filter = `brightness(${brightness}%)`;
+                document.getElementById('brightnessValue').textContent = brightness;
             }
         });
 
+        // Cerrar menú al hacer clic fuera
         document.addEventListener('click', (e) => {
             const menu = document.getElementById('startMenu');
-            if (!menu.contains(e.target) && !document.querySelector('.start-btn').contains(e.target)) {
+            const btn = document.querySelector('.start-btn');
+            if (!menu.contains(e.target) && !btn.contains(e.target)) {
                 menu.classList.remove('active');
             }
         });
