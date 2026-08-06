@@ -48,15 +48,23 @@
             padding: 0 20px;
         }
 
-        .search-bar {
+        .search-container {
             margin: 35px 0;
-            text-align: center;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .search-bar {
+            flex: 1;
+            min-width: 250px;
+            max-width: 400px;
         }
 
         .search-bar input {
             padding: 15px 20px;
             width: 100%;
-            max-width: 600px;
             border: none;
             border-radius: 50px;
             font-size: 1em;
@@ -75,6 +83,60 @@
             transform: scale(1.05);
             box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
             background: #fff;
+        }
+
+        .duckgo-search {
+            flex: 1;
+            min-width: 250px;
+            max-width: 400px;
+        }
+
+        .duckgo-input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .duckgo-input-container input {
+            padding: 15px 45px 15px 20px;
+            width: 100%;
+            border: none;
+            border-radius: 50px;
+            font-size: 1em;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+        }
+
+        .duckgo-input-container input::placeholder {
+            color: #999;
+        }
+
+        .duckgo-input-container input:focus {
+            outline: none;
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            background: #fff;
+        }
+
+        .duckgo-search-btn {
+            position: absolute;
+            right: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .duckgo-search-btn:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            transform: scale(1.1);
         }
 
         .section {
@@ -314,13 +376,26 @@
                 padding: 20px;
             }
 
-            .search-bar input {
+            .search-container {
+                flex-direction: column;
+            }
+
+            .search-bar,
+            .duckgo-search {
                 max-width: 100%;
             }
         }
 
         .empty-section {
             display: none;
+        }
+
+        .search-label {
+            display: block;
+            font-size: 0.85em;
+            color: #ddd;
+            margin-bottom: 5px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -331,8 +406,18 @@
     </header>
 
     <div class="container">
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="🔍 Buscar juegos (nombre, descripción)...">
+        <div class="search-container">
+            <div class="search-bar">
+                <span class="search-label">🔍 Buscar Juegos</span>
+                <input type="text" id="searchInput" placeholder="Busca en nuestro catálogo...">
+            </div>
+            <div class="duckgo-search">
+                <span class="search-label">🦆 Buscar en DuckDuckGo</span>
+                <div class="duckgo-input-container">
+                    <input type="text" id="duckgoInput" placeholder="Busca en la web...">
+                    <button class="duckgo-search-btn" onclick="searchDuckGo()">🔍 Buscar</button>
+                </div>
+            </div>
         </div>
 
         <!-- SECCIÓN JUEGOS CLÁSICOS -->
@@ -633,8 +718,24 @@
             renderSection('online', filteredOnline);
         }
 
+        function searchDuckGo() {
+            const query = document.getElementById('duckgoInput').value.trim();
+            if (query === '') {
+                alert('Por favor ingresa algo para buscar');
+                return;
+            }
+            const searchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
+            window.open(searchUrl, '_blank');
+        }
+
         document.getElementById('searchInput').addEventListener('keyup', function(e) {
             filterBySearch(e.target.value);
+        });
+
+        document.getElementById('duckgoInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchDuckGo();
+            }
         });
 
         window.onclick = function(event) {
