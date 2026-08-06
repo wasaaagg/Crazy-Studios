@@ -119,7 +119,7 @@
             background: white;
         }
 
-        .login-btn {
+        .login-btn, .register-btn {
             width: 100%;
             padding: 12px 20px;
             background: #0078d4;
@@ -130,21 +130,55 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            margin-bottom: 10px;
         }
 
-        .login-btn:hover {
+        .login-btn:hover, .register-btn:hover {
             background: #106ebe;
             transform: translateY(-1px);
         }
 
-        .login-btn:active {
+        .login-btn:active, .register-btn:active {
             transform: translateY(0);
+        }
+
+        .toggle-form-btn {
+            background: none;
+            border: none;
+            color: #0078d4;
+            cursor: pointer;
+            font-size: 13px;
+            text-decoration: underline;
+            padding: 0;
+            margin-top: 10px;
+        }
+
+        .toggle-form-btn:hover {
+            color: #106ebe;
         }
 
         .login-hint {
             font-size: 12px;
             color: #999;
             margin-top: 15px;
+        }
+
+        .error-message {
+            color: #e81123;
+            font-size: 12px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .success-message {
+            color: #107c10;
+            font-size: 12px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .hidden {
+            display: none !important;
         }
 
         /* ============ DESKTOP ============ */
@@ -335,6 +369,13 @@
             min-width: 70px;
             text-align: right;
             font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .user-display {
+            min-width: 120px;
+            text-align: right;
+            font-size: 11px;
             color: rgba(255, 255, 255, 0.7);
         }
 
@@ -1018,13 +1059,31 @@
             <div class="login-logo">🎮</div>
             <h1 class="login-title">Windows 11</h1>
             <p class="login-subtitle">Crazy Studios Gaming Emulator</p>
-            <div class="login-form">
+            
+            <!-- LOGIN FORM -->
+            <div id="loginForm" class="login-form">
                 <label>Usuario</label>
-                <input type="text" class="login-input" id="username" value="Gamer">
+                <input type="text" class="login-input" id="username" placeholder="Ingrese su usuario">
                 <label>Contraseña</label>
-                <input type="password" class="login-input" id="password" value="1234">
+                <input type="password" class="login-input" id="password" placeholder="Ingrese su contraseña">
                 <button class="login-btn" onclick="login()">Iniciar Sesión</button>
-                <div class="login-hint">Usuario: Gamer | Contraseña: 1234</div>
+                <button class="toggle-form-btn" onclick="toggleForm()">¿No tienes cuenta? Crear una</button>
+                <div class="error-message" id="loginError"></div>
+                <div class="login-hint">O crea una nueva cuenta</div>
+            </div>
+
+            <!-- REGISTER FORM -->
+            <div id="registerForm" class="login-form hidden">
+                <label>Nuevo Usuario</label>
+                <input type="text" class="login-input" id="newUsername" placeholder="Elige un nombre de usuario">
+                <label>Contraseña</label>
+                <input type="password" class="login-input" id="newPassword" placeholder="Crea una contraseña segura">
+                <label>Confirmar Contraseña</label>
+                <input type="password" class="login-input" id="confirmPassword" placeholder="Confirma tu contraseña">
+                <button class="register-btn" onclick="register()">Crear Cuenta</button>
+                <button class="toggle-form-btn" onclick="toggleForm()">¿Ya tienes cuenta? Inicia sesión</button>
+                <div class="error-message" id="registerError"></div>
+                <div class="success-message" id="registerSuccess"></div>
             </div>
         </div>
     </div>
@@ -1060,6 +1119,7 @@
                 </div>
             </div>
             <div class="taskbar-right">
+                <div class="user-display" id="userDisplay"></div>
                 <div class="system-tray">
                     <div class="system-tray-icon" title="Volumen">🔊</div>
                     <div class="system-tray-icon" onclick="logout()" title="Cerrar Sesión">🚪</div>
@@ -1267,9 +1327,10 @@
                         <div class="settings-section-title">Acerca de</div>
                         <div class="settings-item" style="flex-direction: column; align-items: flex-start;">
                             <div class="settings-label">Windows 11 - Crazy Studios Gaming Emulator</div>
-                            <div class="settings-label-desc" style="margin-top: 8px;">Versión: 1.0.0</div>
+                            <div class="settings-label-desc" style="margin-top: 8px;">Versión: 2.0.0</div>
                             <div class="settings-label-desc">© 2024 Crazy Studios - Todos los derechos reservados</div>
-                            <div class="settings-label-desc" style="margin-top: 16px;">Este es un emulador de Windows 11 creado con fines educativos y de entretenimiento.</div>
+                            <div class="settings-label-desc" style="margin-top: 16px;">Sistema de cuentas con almacenamiento individual para cada usuario.</div>
+                            <div class="settings-label-desc" style="margin-top: 8px; color: #0078d4;">✓ Múltiples cuentas soportadas</div>
                         </div>
                     </div>
                 </div>
@@ -1368,48 +1429,188 @@
     <button class="fullscreen-btn" onclick="goFullscreen()" title="Pantalla Completa">⛶</button>
 
     <script>
-        // Variables globales
-        let currentBackground = 'linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%)';
-
-        // Actualizar hora
-        function updateTime() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            document.getElementById('timeDisplay').textContent = `${hours}:${minutes}`;
+        // Estructura de datos para usuarios
+        class UserProfile {
+            constructor(username) {
+                this.username = username;
+                this.background = 'linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%)';
+                this.brightness = 100;
+                this.volume = true;
+                this.effects = true;
+                this.music = true;
+                this.animations = true;
+                this.transitions = true;
+                this.darkMode = true;
+            }
         }
 
-        setInterval(updateTime, 1000);
-        updateTime();
+        // Variables globales
+        let currentUser = null;
+        let users = {};
+
+        // Cargar usuarios desde localStorage
+        function loadUsers() {
+            const stored = localStorage.getItem('crazyStudios_users');
+            if (stored) {
+                users = JSON.parse(stored);
+            }
+        }
+
+        // Guardar usuarios en localStorage
+        function saveUsers() {
+            localStorage.setItem('crazyStudios_users', JSON.stringify(users));
+        }
+
+        // Toggle entre formularios
+        function toggleForm() {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            
+            loginForm.classList.toggle('hidden');
+            registerForm.classList.toggle('hidden');
+            
+            // Limpiar errores
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('registerError').style.display = 'none';
+            document.getElementById('registerSuccess').style.display = 'none';
+        }
+
+        // Registrar nuevo usuario
+        function register() {
+            const username = document.getElementById('newUsername').value.trim();
+            const password = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const errorDiv = document.getElementById('registerError');
+            const successDiv = document.getElementById('registerSuccess');
+
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+
+            // Validaciones
+            if (!username) {
+                errorDiv.textContent = 'Por favor ingresa un nombre de usuario';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            if (username.length < 3) {
+                errorDiv.textContent = 'El usuario debe tener al menos 3 caracteres';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            if (users[username]) {
+                errorDiv.textContent = 'Este usuario ya existe';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            if (!password || password.length < 4) {
+                errorDiv.textContent = 'La contraseña debe tener al menos 4 caracteres';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                errorDiv.textContent = 'Las contraseñas no coinciden';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            // Crear nuevo usuario
+            users[username] = {
+                password: password,
+                profile: new UserProfile(username)
+            };
+
+            saveUsers();
+
+            successDiv.textContent = '✓ Cuenta creada exitosamente. Ahora puedes iniciar sesión.';
+            successDiv.style.display = 'block';
+
+            // Limpiar campos
+            document.getElementById('newUsername').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+
+            // Volver al login después de 2 segundos
+            setTimeout(() => {
+                toggleForm();
+            }, 2000);
+        }
 
         // Login
         function login() {
-            const username = document.getElementById('username').value;
+            const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('loginError');
 
-            if (username === 'Gamer' && password === '1234') {
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('desktop').classList.add('active');
-                localStorage.setItem('background', currentBackground);
-            } else {
-                alert('Usuario o contraseña incorrectos');
+            errorDiv.style.display = 'none';
+
+            if (!username || !password) {
+                errorDiv.textContent = 'Por favor completa todos los campos';
+                errorDiv.style.display = 'block';
+                return;
             }
+
+            if (!users[username] || users[username].password !== password) {
+                errorDiv.textContent = 'Usuario o contraseña incorrectos';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            // Login exitoso
+            currentUser = username;
+            loadUserProfile();
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('desktop').classList.add('active');
+            document.getElementById('userDisplay').textContent = `👤 ${username}`;
         }
 
         // Logout
         function logout() {
+            saveUserProfile();
+            currentUser = null;
             document.getElementById('desktop').classList.remove('active');
             document.getElementById('loginScreen').style.display = 'flex';
             closeAllWindows();
+            
+            // Limpiar campos
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        // Cargar perfil del usuario actual
+        function loadUserProfile() {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const profile = users[currentUser].profile;
+            
+            document.getElementById('desktop').style.background = profile.background;
+            document.getElementById('desktop').style.filter = `brightness(${profile.brightness}%)`;
+            document.getElementById('brightnessValue').textContent = profile.brightness;
+        }
+
+        // Guardar perfil del usuario actual
+        function saveUserProfile() {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const profile = users[currentUser].profile;
+            const brightnessValue = document.getElementById('brightnessValue').textContent;
+            
+            profile.brightness = parseInt(brightnessValue);
+            
+            saveUsers();
         }
 
         // Cambiar fondo
         function changeBackground(gradient, element) {
-            currentBackground = gradient;
+            if (!currentUser) return;
+            
+            users[currentUser].profile.background = gradient;
             document.getElementById('desktop').style.background = gradient;
-            localStorage.setItem('background', gradient);
+            saveUserProfile();
 
-            // Actualizar selector visual
             document.querySelectorAll('.color-option').forEach(opt => {
                 opt.classList.remove('selected');
             });
@@ -1418,9 +1619,12 @@
 
         // Brillo
         function changeBrightness(value) {
+            if (!currentUser) return;
+            
             document.getElementById('desktop').style.filter = `brightness(${value}%)`;
             document.getElementById('brightnessValue').textContent = value;
-            localStorage.setItem('brightness', value);
+            users[currentUser].profile.brightness = parseInt(value);
+            saveUserProfile();
         }
 
         // Toggle Start Menu
@@ -1485,12 +1689,36 @@
         }
 
         // Toggles de configuración
-        function toggleVolume(btn) { btn.classList.toggle('active'); }
-        function toggleEffects(btn) { btn.classList.toggle('active'); }
-        function toggleMusic(btn) { btn.classList.toggle('active'); }
-        function toggleAnimations(btn) { btn.classList.toggle('active'); }
-        function toggleTransitions(btn) { btn.classList.toggle('active'); }
-        function toggleDarkMode(btn) { btn.classList.toggle('active'); }
+        function toggleVolume(btn) { 
+            btn.classList.toggle('active');
+            if (currentUser) users[currentUser].profile.volume = btn.classList.contains('active');
+            saveUserProfile();
+        }
+        function toggleEffects(btn) { 
+            btn.classList.toggle('active');
+            if (currentUser) users[currentUser].profile.effects = btn.classList.contains('active');
+            saveUserProfile();
+        }
+        function toggleMusic(btn) { 
+            btn.classList.toggle('active');
+            if (currentUser) users[currentUser].profile.music = btn.classList.contains('active');
+            saveUserProfile();
+        }
+        function toggleAnimations(btn) { 
+            btn.classList.toggle('active');
+            if (currentUser) users[currentUser].profile.animations = btn.classList.contains('active');
+            saveUserProfile();
+        }
+        function toggleTransitions(btn) { 
+            btn.classList.toggle('active');
+            if (currentUser) users[currentUser].profile.transitions = btn.classList.contains('active');
+            saveUserProfile();
+        }
+        function toggleDarkMode(btn) { 
+            btn.classList.toggle('active');
+            if (currentUser) users[currentUser].profile.darkMode = btn.classList.contains('active');
+            saveUserProfile();
+        }
 
         // Pantalla completa
         function goFullscreen() {
@@ -1500,17 +1728,27 @@
             }
         }
 
-        // Cargar datos guardados
+        // Actualizar hora
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('timeDisplay').textContent = `${hours}:${minutes}`;
+        }
+
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Inicializar
         window.addEventListener('load', () => {
-            const saved = localStorage.getItem('background');
-            if (saved) {
-                currentBackground = saved;
-                document.getElementById('desktop').style.background = saved;
-            }
-            const brightness = localStorage.getItem('brightness');
-            if (brightness) {
-                document.getElementById('desktop').style.filter = `brightness(${brightness}%)`;
-                document.getElementById('brightnessValue').textContent = brightness;
+            loadUsers();
+            // Crear cuenta de demo si no existe
+            if (!users['Demo']) {
+                users['Demo'] = {
+                    password: 'demo1234',
+                    profile: new UserProfile('Demo')
+                };
+                saveUsers();
             }
         });
 
