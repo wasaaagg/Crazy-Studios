@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crazy Studios - Emulador de Juegos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 3px solid #667eea;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: #00ff88;
+        }
+
+        header p {
+            color: #aaa;
+            font-size: 1.1em;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .search-bar {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .search-bar input {
+            padding: 15px 20px;
+            width: 100%;
+            max-width: 500px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1em;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #00ff88;
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .game-image {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-image::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translate(-100%, -100%) rotate(45deg); }
+            100% { transform: translate(100%, 100%) rotate(45deg); }
+        }
+
+        .game-info {
+            padding: 20px;
+        }
+
+        .game-info h3 {
+            font-size: 1.3em;
+            margin-bottom: 8px;
+            color: #00ff88;
+        }
+
+        .game-info p {
+            color: #ddd;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+
+        .play-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .play-btn:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 2px solid #667eea;
+            box-shadow: 0 0 30px rgba(102, 126, 234, 0.3);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close {
+            color: #00ff88;
+            float: right;
+            font-size: 2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close:hover {
+            color: #ff6b6b;
+            transform: rotate(90deg);
+        }
+
+        .game-iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .game-title {
+            color: #00ff88;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .featured {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            grid-column: span 2;
+        }
+
+        .featured .game-image {
+            height: 250px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+        }
+
+        @media (max-width: 768px) {
+            .games-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
+            .featured {
+                grid-column: span 1;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .game-iframe {
+                height: 400px;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 20% auto;
+                padding: 20px;
+            }
+        }
+
+        .category-filter {
+            display: flex;
+            gap: 10px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .category-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 2px solid #667eea;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: #667eea;
+            border-color: #00ff88;
+            color: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            margin-top: 60px;
+            border-top: 2px solid #667eea;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🎮 CRAZY STUDIOS</h1>
+        <p>Emulador de Juegos - Juega tus Clásicos Favoritos</p>
+    </header>
+
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="🔍 Buscar juegos...">
+        </div>
+
+        <div class="category-filter">
+            <button class="category-btn active" onclick="filterGames('all')">Todos</button>
+            <button class="category-btn" onclick="filterGames('arcade')">Arcade</button>
+            <button class="category-btn" onclick="filterGames('adventure')">Aventura</button>
+            <button class="category-btn" onclick="filterGames('puzzle')">Puzzles</button>
+            <button class="category-btn" onclick="filterGames('online')">Online</button>
+        </div>
+
+        <div class="games-grid" id="gamesGrid">
+            <!-- Los juegos se cargarán aquí con JavaScript -->
+        </div>
+    </div>
+
+    <div id="gameModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeGame()">&times;</span>
+            <h2 class="game-title" id="modalTitle">Título del Juego</h2>
+            <div id="gameContainer">
+                <!-- El contenido del juego se cargará aquí -->
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Crazy Studios - Emulador de Juegos | Hecho con ❤️</p>
+    </footer>
+
+    <script>
+        const games = [
+            {
+                id: 1,
+                name: 'Roblox',
+                emoji: '🟥',
+                category: 'online',
+                description: 'La plataforma de juegos online más popular',
+                url: 'https://www.roblox.com/'
+            },
+            {
+                id: 2,
+                name: 'Pac-Man',
+                emoji: '👾',
+                category: 'arcade',
+                description: 'El clásico juego de arcade',
+                url: 'https://phasergames.com/pacman/'
+            },
+            {
+                id: 3,
+                name: 'Snake',
+                emoji: '🐍',
+                category: 'puzzle',
+                description: 'El legendario juego de la serpiente',
+                url: 'https://www.playsnake.org/'
+            },
+            {
+                id: 4,
+                name: 'Tetris',
+                emoji: '🧱',
+                category: 'puzzle',
+                description: 'Encaja las piezas perfectamente',
+                url: 'https://tetris.com/'
+            },
+            {
+                id: 5,
+                name: 'Space Invaders',
+                emoji: '👽',
+                category: 'arcade',
+                description: 'Defiende la tierra de los invasores',
+                url: 'https://phasergames.com/spaceinvaders/'
+            },
+            {
+                id: 6,
+                name: 'Flappy Bird',
+                emoji: '🐦',
+                category: 'arcade',
+                description: 'El juego más adictivo de los últimos años',
+                url: 'https://flappybird.io/'
+            },
+            {
+                id: 7,
+                name: 'Minecraft',
+                emoji: '⛏️',
+                category: 'adventure',
+                description: 'Construye y explora mundos infinitos',
+                url: 'https://www.minecraft.net/'
+            },
+            {
+                id: 8,
+                name: '2048',
+                emoji: '🔢',
+                category: 'puzzle',
+                description: 'Combina números para llegar a 2048',
+                url: 'https://2048game.com/'
+            },
+            {
+                id: 9,
+                name: 'Dino Runner',
+                emoji: '🦕',
+                category: 'arcade',
+                description: 'Corre como un dinosaurio Chrome',
+                url: 'https://chromedino.com/'
+            },
+            {
+                id: 10,
+                name: 'Portal',
+                emoji: '🌀',
+                category: 'adventure',
+                description: 'Resuelve puzles con portales',
+                url: 'https://www.portalhq.com/'
+            },
+            {
+                id: 11,
+                name: 'The Legend of Zelda',
+                emoji: '🗡️',
+                category: 'adventure',
+                description: 'La aventura épica de Link',
+                url: 'https://classicgames.online/'
+            },
+            {
+                id: 12,
+                name: 'Among Us',
+                emoji: '👥',
+                category: 'online',
+                description: 'Encuentra al impostor entre tus amigos',
+                url: 'https://www.amongusgame.com/'
+            }
+        ];
+
+        let currentFilter = 'all';
+
+        function renderGames(gamesToRender = games) {
+            const grid = document.getElementById('gamesGrid');
+            grid.innerHTML = '';
+
+            gamesToRender.forEach(game => {
+                const card = document.createElement('div');
+                card.className = 'game-card';
+                if (game.category === 'online') card.classList.add('featured');
+                
+                card.innerHTML = `
+                    <div class="game-image">${game.emoji}</div>
+                    <div class="game-info">
+                        <h3>${game.name}</h3>
+                        <p>${game.description}</p>
+                        <button class="play-btn" onclick="playGame('${game.name}', '${game.url}')">
+                            ▶️ JUGAR
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function playGame(name, url) {
+            const modal = document.getElementById('gameModal');
+            const title = document.getElementById('modalTitle');
+            const container = document.getElementById('gameContainer');
+
+            title.textContent = name;
+            container.innerHTML = `
+                <p style="margin-bottom: 20px; color: #aaa;">Cargando ${name}...</p>
+                <iframe class="game-iframe" src="${url}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"></iframe>
+                <p style="margin-top: 20px; color: #aaa; font-size: 0.9em;">
+                    💡 Si el juego no carga, haz clic <a href="${url}" target="_blank" style="color: #00ff88;">aquí</a> para abrir en una nueva pestaña.
+                </p>
+            `;
+
+            modal.style.display = 'block';
+        }
+
+        function closeGame() {
+            document.getElementById('gameModal').style.display = 'none';
+        }
+
+        function filterGames(category) {
+            currentFilter = category;
+            const buttons = document.querySelectorAll('.category-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (category === 'all') {
+                renderGames(games);
+            } else {
+                const filtered = games.filter(game => game.category === category);
+                renderGames(filtered);
+            }
+        }
+
+        document.getElementById('searchInput').addEventListener('keyup', function(e) {
+            const search = e.target.value.toLowerCase();
+            const filtered = games.filter(game => 
+                game.name.toLowerCase().includes(search) ||
+                game.description.toLowerCase().includes(search)
+            );
+            renderGames(filtered);
+        });
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('gameModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Cargar juegos al iniciar
+        renderGames();
+    </script>
+</body>
+</html>
