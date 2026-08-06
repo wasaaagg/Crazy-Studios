@@ -397,6 +397,17 @@
             margin-bottom: 5px;
             font-weight: bold;
         }
+
+        .emulator-badge {
+            display: inline-block;
+            background: #ff6b6b;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7em;
+            margin-top: 5px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -446,7 +457,7 @@
 
         <!-- SECCIÓN JUEGOS ONLINE -->
         <div class="section" id="onlineSection">
-            <h2 class="section-title">🌐 JUEGOS ONLINE</h2>
+            <h2 class="section-title">🌐 JUEGOS ONLINE (Emulados en Now.gg)</h2>
             <div class="games-grid" id="onlineGames">
                 <!-- Los juegos online se cargarán aquí -->
             </div>
@@ -580,7 +591,8 @@
                     emoji: '🟥',
                     category: 'online',
                     description: 'La plataforma de juegos online más popular',
-                    url: 'https://www.roblox.com/'
+                    url: 'https://now.gg/play/roblox/49513',
+                    isEmulated: true
                 },
                 {
                     id: 14,
@@ -588,7 +600,8 @@
                     emoji: '👥',
                     category: 'online',
                     description: 'Encuentra al impostor entre tus amigos',
-                    url: 'https://www.amongusgame.com/'
+                    url: 'https://now.gg/play/among-us/40000',
+                    isEmulated: true
                 },
                 {
                     id: 15,
@@ -596,7 +609,8 @@
                     emoji: '🎯',
                     category: 'online',
                     description: 'Battle royale multijugador en línea',
-                    url: 'https://www.fortnite.com/'
+                    url: 'https://now.gg/play/fortnite/4131',
+                    isEmulated: true
                 },
                 {
                     id: 16,
@@ -604,23 +618,26 @@
                     emoji: '⚔️',
                     category: 'online',
                     description: 'El MOBA más popular del mundo',
-                    url: 'https://www.leagueoflegends.com/'
+                    url: 'https://now.gg/play/league-of-legends/1486',
+                    isEmulated: true
                 },
                 {
                     id: 17,
-                    name: 'Agar.io',
-                    emoji: '⭕',
+                    name: 'PUBG Mobile',
+                    emoji: '🔫',
                     category: 'online',
-                    description: 'Multijugador: crece comiendo a otros',
-                    url: 'https://agar.io/'
+                    description: 'Battle royale multijugador extremo',
+                    url: 'https://now.gg/play/pubg-mobile/22601',
+                    isEmulated: true
                 },
                 {
                     id: 18,
-                    name: 'Skribbl.io',
-                    emoji: '🎨',
+                    name: 'Call of Duty Mobile',
+                    emoji: '🎮',
                     category: 'online',
-                    description: 'Juego de dibujo y adivinanza multijugador',
-                    url: 'https://skribbl.io/'
+                    description: 'FPS acción multijugador en tu navegador',
+                    url: 'https://now.gg/play/call-of-duty-mobile/5353',
+                    isEmulated: true
                 }
             ]
         };
@@ -655,12 +672,18 @@
                 const card = document.createElement('div');
                 card.className = 'game-card';
                 
+                let badgeHTML = '';
+                if (game.isEmulated) {
+                    badgeHTML = '<span class="emulator-badge">⚡ Emulado en Now.gg</span>';
+                }
+                
                 card.innerHTML = `
                     <div class="game-image">${game.emoji}</div>
                     <div class="game-info">
                         <h3>${game.name}</h3>
                         <p>${game.description}</p>
-                        <button class="play-btn" onclick="playGame('${game.name}', '${game.url}')">
+                        ${badgeHTML}
+                        <button class="play-btn" onclick="playGame('${game.name}', '${game.url}', ${game.isEmulated ? 'true' : 'false'})">
                             ▶️ JUGAR
                         </button>
                     </div>
@@ -669,14 +692,17 @@
             });
         }
 
-        function playGame(name, url) {
+        function playGame(name, url, isEmulated) {
             const modal = document.getElementById('gameModal');
             const title = document.getElementById('modalTitle');
             const container = document.getElementById('gameContainer');
 
             title.textContent = name;
+            
+            let loadingText = isEmulated ? 'Emulando en Now.gg' : 'Cargando';
+            
             container.innerHTML = `
-                <p style="margin-bottom: 20px; color: #aaa;">Cargando ${name}...</p>
+                <p style="margin-bottom: 20px; color: #aaa;">${loadingText} ${name}...</p>
                 <iframe class="game-iframe" src="${url}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"></iframe>
                 <p style="margin-top: 20px; color: #aaa; font-size: 0.9em;">
                     💡 Si el juego no carga, haz clic <a href="${url}" target="_blank" style="color: #00ff88;">aquí</a> para abrir en una nueva pestaña.
