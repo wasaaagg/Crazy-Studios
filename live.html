@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crazy Live</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-badge">🎮</span>
+        <span>Crazy Studios</span>
+      </div>
+      <nav class="nav">
+        <button data-page="index.html">⌂ Inicio</button>
+        <button data-page="games.html">🎮 Juegos</button>
+        <button data-page="apps.html">▣ Apps</button>
+        <button class="active" data-page="live.html">📡 Live</button>
+        <button data-page="shop.html">🛒 Tienda</button>
+      </nav>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <label class="search">
+          🔎
+          <input type="text" placeholder="Buscar live..." />
+        </label>
+      </header>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <h2>Zona Live</h2>
+            <p>Directos en vivo, gaming y comunidad.</p>
+          </div>
+        </div>
+
+        <div class="live-grid">
+          <div class="live-card">
+            <div class="live-header"><div class="live-badge">LIVE</div><div style="font-size:52px;">🎮</div></div>
+            <div class="live-body">
+              <strong>LIVE: PUBG</strong><br>
+              <div class="small muted">Host: Milo</div>
+              <div class="small muted">1240 espectadores</div>
+              <button class="btn primary" style="margin-top:12px;">Entrar</button>
+            </div>
+          </div>
+
+          <div class="live-card">
+            <div class="live-header"><div class="live-badge">LIVE</div><div style="font-size:52px;">🏗️</div></div>
+            <div class="live-body">
+              <strong>LIVE: Minecraft Build</strong><br>
+              <div class="small muted">Host: Astra</div>
+              <div class="small muted">890 espectadores</div>
+              <button class="btn primary" style="margin-top:12px;">Entrar</button>
+            </div>
+          </div>
+
+          <div class="live-card">
+            <div class="live-header"><div class="live-badge">LIVE</div><div style="font-size:52px;">⚔️</div></div>
+            <div class="live-body">
+              <strong>LIVE: Fortnite</strong><br>
+              <div class="small muted">Host: Nex</div>
+              <div class="small muted">1530 espectadores</div>
+              <button class="btn primary" style="margin-top:12px;">Entrar</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    document.querySelectorAll("[data-page]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        window.location.href = btn.dataset.page;
+      });
+    });
+  </script>
+</body>
+</html>

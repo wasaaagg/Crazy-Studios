@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crazy Shop</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-badge">🎮</span>
+        <span>Crazy Studios</span>
+      </div>
+      <nav class="nav">
+        <button data-page="index.html">⌂ Inicio</button>
+        <button data-page="games.html">🎮 Juegos</button>
+        <button data-page="apps.html">▣ Apps</button>
+        <button data-page="live.html">📡 Live</button>
+        <button class="active" data-page="shop.html">🛒 Tienda</button>
+      </nav>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <label class="search">
+          🔎
+          <input type="text" placeholder="Buscar productos..." />
+        </label>
+      </header>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <h2>Tienda de puntos</h2>
+            <p>Usa tus puntos para obtener beneficios.</p>
+          </div>
+        </div>
+
+        <div class="shop-grid">
+          <div class="shop-item">
+            <h3>10 mensajes IA</h3>
+            <p>Amplía tu capacidad para hablar con Crazy IA.</p>
+            <span class="price">🪙 10</span>
+            <button class="btn primary">Comprar</button>
+          </div>
+
+          <div class="shop-item">
+            <h3>30 mensajes IA</h3>
+            <p>Más potencia para la conversación.</p>
+            <span class="price">🪙 25</span>
+            <button class="btn primary">Comprar</button>
+          </div>
+
+          <div class="shop-item">
+            <h3>Tema neón</h3>
+            <p>Activa una apariencia especial.</p>
+            <span class="price">🪙 50</span>
+            <button class="btn primary">Comprar</button>
+          </div>
+
+          <div class="shop-item">
+            <h3>Insignia gamer</h3>
+            <p>Desbloquea un sello premium.</p>
+            <span class="price">🪙 80</span>
+            <button class="btn primary">Comprar</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    document.querySelectorAll("[data-page]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        window.location.href = btn.dataset.page;
+      });
+    });
+  </script>
+</body>
+</html>

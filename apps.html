@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crazy Apps</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-badge">🎮</span>
+        <span>Crazy Studios</span>
+      </div>
+      <nav class="nav">
+        <button data-page="index.html">⌂ Inicio</button>
+        <button data-page="games.html">🎮 Juegos</button>
+        <button class="active" data-page="apps.html">▣ Apps</button>
+        <button data-page="live.html">📡 Live</button>
+        <button data-page="shop.html">🛒 Tienda</button>
+      </nav>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <label class="search">
+          🔎
+          <input type="text" placeholder="Buscar apps..." />
+        </label>
+      </header>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <h2>Apps populares</h2>
+            <p>Google, YouTube, Spotify, Discord y muchas más.</p>
+          </div>
+        </div>
+
+        <div class="catalog">
+          <article class="card">
+            <div class="cover"><span class="badge">App</span><img src="https://cdn.simpleicons.org/google/4285f4" alt="Google" /></div>
+            <div class="card-body">
+              <h3>Google</h3>
+              <div class="description">Busca información rápida y útil.</div>
+              <div class="meta"><span>Búsqueda</span><span class="rating">★ 4.8</span></div>
+              <div class="card-actions"><button class="btn primary">Abrir</button><button class="btn">Info</button></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="cover"><span class="badge">App</span><img src="https://cdn.simpleicons.org/youtube/ff0000" alt="YouTube" /></div>
+            <div class="card-body">
+              <h3>YouTube</h3>
+              <div class="description">Canales, vídeos y directos.</div>
+              <div class="meta"><span>Entretenimiento</span><span class="rating">★ 4.8</span></div>
+              <div class="card-actions"><button class="btn primary">Abrir</button><button class="btn">Info</button></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="cover"><span class="badge">App</span><img src="https://cdn.simpleicons.org/spotify/1ed760" alt="Spotify" /></div>
+            <div class="card-body">
+              <h3>Spotify</h3>
+              <div class="description">Música, podcasts y playlists.</div>
+              <div class="meta"><span>Música</span><span class="rating">★ 4.8</span></div>
+              <div class="card-actions"><button class="btn primary">Abrir</button><button class="btn">Info</button></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="cover"><span class="badge">App</span><img src="https://cdn.simpleicons.org/discord/5865f2" alt="Discord" /></div>
+            <div class="card-body">
+              <h3>Discord</h3>
+              <div class="description">Comunidades y chats con amigos.</div>
+              <div class="meta"><span>Comunicación</span><span class="rating">★ 4.7</span></div>
+              <div class="card-actions"><button class="btn primary">Abrir</button><button class="btn">Info</button></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="cover"><span class="badge">App</span><img src="https://cdn.simpleicons.org/twitch/9146ff" alt="Twitch" /></div>
+            <div class="card-body">
+              <h3>Twitch</h3>
+              <div class="description">Directos de gaming y streamers.</div>
+              <div class="meta"><span>Streaming</span><span class="rating">★ 4.6</span></div>
+              <div class="card-actions"><button class="btn primary">Abrir</button><button class="btn">Info</button></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="cover"><span class="badge">App</span><img src="https://cdn.simpleicons.org/github/ffffff" alt="GitHub" /></div>
+            <div class="card-body">
+              <h3>GitHub</h3>
+              <div class="description">Repositorios y proyectos.</div>
+              <div class="meta"><span>Desarrollo</span><span class="rating">★ 4.8</span></div>
+              <div class="card-actions"><button class="btn primary">Abrir</button><button class="btn">Info</button></div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    document.querySelectorAll("[data-page]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        window.location.href = btn.dataset.page;
+      });
+    });
+  </script>
+</body>
+</html>

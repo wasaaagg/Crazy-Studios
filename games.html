@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crazy Games</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-badge">🎮</span>
+        <span>Crazy Studios</span>
+      </div>
+      <nav class="nav">
+        <button data-page="index.html">⌂ Inicio</button>
+        <button class="active" data-page="games.html">🎮 Juegos</button>
+        <button data-page="apps.html">▣ Apps</button>
+        <button data-page="live.html">📡 Live</button>
+        <button data-page="shop.html">🛒 Tienda</button>
+      </nav>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <label class="search">
+          🔎
+          <input type="text" placeholder="Buscar juegos..." />
+        </label>
+      </header>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <h2>Juegos virales y clásicos</h2>
+            <p>Fortnite, Roblox, Free Fire, Minecraft, Tetris y más.</p>
+          </div>
+        </div>
+
+        <div class="catalog">
+          <article class="card">
+            <div class="cover"><span class="badge">Juego</span><img src="https://cdn.simpleicons.org/minecraft/62b47a" alt="Minecraft" /></div>
+            <div class="card-body">
+              <h3>Minecraft</h3>
+              <div class="description">Construye mundos infinitos y explora.</div>
+              <div class="meta"><span>Aventura</span><span class="rating">★ 4.9</span></div>
+              <div class="card-actions"><button class="btn primary">Abrir</button><button class="btn">Info</button></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="cover"><span class="badge">Juego</span><img src="https://cdn.simpleicons.org/fortnite/ffffff" alt="Fortnite" /></div>
+            <div class="card-body">
+              <h3>Fortnite</h3>
+              <div class="description">Compite en batallas intensas.</div>
+              <div class="meta"><span>Battle Royale</span><span class="rating">★ 4.8</span></div>
+              <div class="card-actions"><button class="btn primary">Abrir</button><button class="btn">Info</button></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="cover"><span class="badge">Juego</span><img src="https://cdn.simpleicons.org/roblox/ffffff" alt="Roblox" /></div>
+            <div class="card-body">
+              <h3>Roblox</h3>
+              <div class="description">Experiencias creadas por la comunidad.</div>
+              <div class="meta"><span>Multijugador</span><span class="rating">★ 4.8</span></div>
+              <div class="card-actions"><button class="btn primary">Abrir</button><button class="btn">Info</button></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="cover"><span class="badge">Clásico</span><img src="https://cdn.simpleicons.org/tetris/ffffff" alt="Tetris" /></div>
+            <div class="card-body">
+              <h3>Tetris</h3>
+              <div class="description">El clásico puzzle de encajar piezas.</div>
+              <div class="meta"><span>Puzzle</span><span class="rating">★ 4.9</span></div>
+              <div class="card-actions"><button class="btn primary">Abrir</button><button class="btn">Info</button></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="cover"><span class="badge">Clásico</span><img src="https://cdn.simpleicons.org/pacman/ffd166" alt="Pac-Man" /></div>
+            <div class="card-body">
+              <h3>Pac-Man</h3>
+              <div class="description">Arcade clásico en laberinto.</div>
+              <div class="meta"><span>Arcade</span><span class="rating">★ 4.8</span></div>
+              <div class="card-actions"><button class="btn primary">Abrir</button><button class="btn">Info</button></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="cover"><span class="badge">Juego</span><img src="https://cdn.simpleicons.org/freefire/ff6a00" alt="Free Fire" /></div>
+            <div class="card-body">
+              <h3>Free Fire</h3>
+              <div class="description">Competencia intensa y rapidez extrema.</div>
+              <div class="meta"><span>Battle Royale</span><span class="rating">★ 4.7</span></div>
+              <div class="card-actions"><button class="btn primary">Abrir</button><button class="btn">Info</button></div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    document.querySelectorAll("[data-page]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        window.location.href = btn.dataset.page;
+      });
+    });
+  </script>
+</body>
+</html>
